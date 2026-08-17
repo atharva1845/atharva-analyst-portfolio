@@ -2,31 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type FormEvent, type ReactNode, useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { type ReactNode, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
   AtSign,
   BriefcaseBusiness,
   CheckCircle2,
-  Database,
   Download,
   ExternalLink,
   FileText,
   Link2,
   Mail,
   Menu,
-  Moon,
   Phone,
-  Route,
-  Send,
-  Sun,
   X,
 } from "lucide-react";
 import {
   achievement,
-  certifications,
   contact,
   credibility,
   education,
@@ -38,327 +32,194 @@ import {
   siteMeta,
   skills,
 } from "@/lib/portfolio-data";
+import styles from "./portfolio.module.css";
 
 const navItems = [
-  ["Profile", "profile"],
+  ["Home", "home"],
+  ["About", "about"],
+  ["Skills", "skills"],
   ["Projects", "projects"],
   ["Experience", "experience"],
-  ["Capabilities", "capabilities"],
   ["Contact", "contact"],
-] as const;
+];
 
-const pillarIcons = [BriefcaseBusiness, Route, Database];
-
-function useTyping(words: string[]) {
-  const [index, setIndex] = useState(0);
-  const [text, setText] = useState(words[0] ?? "Business Analyst");
-  const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    const current = words[index];
-    const isComplete = text === current;
-    const isEmpty = text.length === 0;
-    const delay = isComplete ? 1550 : deleting ? 36 : 72;
-
-    const timer = window.setTimeout(() => {
-      if (!deleting && !isComplete) {
-        setText(current.slice(0, text.length + 1));
-      } else if (!deleting && isComplete) {
-        setDeleting(true);
-      } else if (deleting && !isEmpty) {
-        setText(current.slice(0, text.length - 1));
-      } else {
-        setDeleting(false);
-        setIndex((value) => (value + 1) % words.length);
-      }
-    }, delay);
-
-    return () => window.clearTimeout(timer);
-  }, [deleting, index, text, words]);
-
-  return text;
-}
+const projectAccents = ["mint", "blue", "coral", "yellow", "violet", "sky"];
 
 export default function Portfolio() {
-  const typedRole = useTyping(roles);
-  const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 180, damping: 28, restDelta: 0.001 });
+  const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-  }, [darkMode]);
+    const timer = window.setInterval(() => {
+      setRoleIndex((current) => (current + 1) % roles.length);
+    }, 2400);
 
-  function handleContact(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const subject = String(data.get("subject") || "Analyst opportunity");
-    const message = String(data.get("message") || "");
-    const name = String(data.get("name") || "");
-    const sender = String(data.get("email") || "");
-    const body = `${message}\n\nFrom: ${name}${sender ? ` (${sender})` : ""}`;
-    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
+    return () => window.clearInterval(timer);
+  }, []);
 
   return (
-    <main className="portfolio-root">
-      <motion.div className="scroll-progress" style={{ scaleX: progress }} />
-      <Navbar
-        darkMode={darkMode}
-        menuOpen={menuOpen}
-        setDarkMode={setDarkMode}
-        setMenuOpen={setMenuOpen}
-      />
+    <main className={styles.site}>
+      <header className={styles.header}>
+        <div className={styles.navShell}>
+          <a className={styles.brand} href="#home" aria-label="Atharva Rajoba home">
+            <span>AR</span>
+            <strong>Atharva Rajoba</strong>
+          </a>
 
-      <section id="home" className="hero-section">
+          <nav className={styles.desktopNav} aria-label="Primary navigation">
+            {navItems.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
+          </nav>
+
+          <a className={styles.navResume} href="/Atharva-Analyst-Resume.pdf" download>
+            Resume <Download size={15} />
+          </a>
+
+          <button
+            className={styles.menuButton}
+            type="button"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X size={21} /> : <Menu size={21} />}
+          </button>
+        </div>
+
+        {menuOpen ? (
+          <motion.nav
+            className={styles.mobileNav}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            aria-label="Mobile navigation"
+          >
+            {navItems.map(([label, id]) => (
+              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
+                {label}<ArrowUpRight size={15} />
+              </a>
+            ))}
+          </motion.nav>
+        ) : null}
+      </header>
+
+      <section className={styles.hero} id="home">
         <Image
+          className={styles.heroImage}
           src="/analyst-workspace-hero.png"
-          alt="Business analysis workspace with process maps, data tables, and decision charts"
+          alt="Analytics workspace with research notes, process maps, and dashboards"
           fill
           priority
           sizes="100vw"
-          className="hero-image"
         />
-        <div className="hero-shade" />
-        <div className="hero-grid" />
+        <div className={styles.heroWash} />
+        <div className={styles.heroGrid} />
 
-        <div className="section-shell hero-inner">
-          <div className="hero-copy">
-            <div className="availability-pill">
-              <span className="availability-dot" />
-              {siteMeta.availability}
-            </div>
-
-            <p className="hero-kicker">Business clarity, backed by data</p>
-            <h1>Atharva Rajoba</h1>
-            <div className="hero-role" aria-live="polite">
-              <span>{typedRole}</span>
-              <span className="typing-caret" aria-hidden="true" />
-            </div>
-            <p className="hero-summary">
-              I map business problems, examine the evidence, and turn complexity into workflows,
-              product decisions, and measurable next steps.
-            </p>
-
-            <div className="hero-actions">
-              <ActionLink href="#projects" variant="primary" icon={<ArrowRight size={18} />}>
-                Explore case studies
-              </ActionLink>
-              <ActionLink href="/Atharva-Analyst-Resume.pdf" icon={<Download size={18} />} download>
-                Resume
-              </ActionLink>
-              <ActionLink href="#contact" icon={<Mail size={18} />}>
-                Start a conversation
-              </ActionLink>
-            </div>
-          </div>
-
-          <div className="hero-note" aria-label="Core approach">
-            <span>01</span>
-            <p>Question</p>
-            <ArrowRight size={15} />
-            <p>Evidence</p>
-            <ArrowRight size={15} />
-            <p>Decision</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="signal-band" aria-label="Selected portfolio evidence">
-        <div className="section-shell signal-grid">
-          {credibility.map((item, index) => (
-            <Reveal key={item.label} delay={index * 0.05}>
-              <div className="signal-item">
-                <strong>{item.value}</strong>
-                <span>{item.label}</span>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <Section
-        id="profile"
-        eyebrow="Analyst profile"
-        index="02"
-        title="One analyst, three useful lenses."
-        intro="Business analysis leads the work. Product thinking shapes the experience. Data analysis keeps the recommendation honest."
-      >
-        <div className="pillar-grid">
-          {profilePillars.map((pillar, index) => {
-            const Icon = pillarIcons[index];
-            return (
-              <Reveal key={pillar.title} delay={index * 0.08}>
-                <motion.article
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.25 }}
-                  className={`pillar-card pillar-${pillar.accent}`}
-                >
-                  <div className="pillar-topline">
-                    <span>0{index + 1}</span>
-                    <Icon size={22} />
-                  </div>
-                  <h3>{pillar.title}</h3>
-                  <p className="pillar-focus">{pillar.focus}</p>
-                  <div className="pillar-evidence">
-                    <span>Evidence</span>
-                    <p>{pillar.evidence}</p>
-                  </div>
-                </motion.article>
-              </Reveal>
-            );
-          })}
-        </div>
-
-        <Reveal>
-          <div className="approach-row">
-            <div>
-              <p className="mini-label">How I work</p>
-              <h3>Structure the ambiguity before building the answer.</h3>
-            </div>
-            <div className="approach-steps">
-              {[
-                ["Frame", "Clarify the user, business question, and decision."],
-                ["Investigate", "Map the process and validate the available evidence."],
-                ["Translate", "Present findings as actions, tradeoffs, and next steps."],
-              ].map(([title, copy], index) => (
-                <div key={title}>
-                  <span>{index + 1}</span>
-                  <p><strong>{title}</strong>{copy}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-      </Section>
-
-      <Section
-        id="projects"
-        dark
-        eyebrow="Selected work"
-        index="03"
-        title="Case studies built around decisions, not decoration."
-        intro="Each project starts with the business question, shows my contribution, and ends with what the evidence suggests doing next."
-      >
-        <div className="featured-projects">
-          {projects.filter((project) => project.featured).map((project, index) => (
-            <Reveal key={project.slug} delay={index * 0.08}>
-              <motion.article
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.25 }}
-                className="featured-project"
+        <div className={styles.heroInner}>
+          <motion.div
+            className={styles.heroCopy}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            <div className={styles.availability}><span />{siteMeta.availability}</div>
+            <p className={styles.heroEyebrow}>Business clarity, powered by evidence</p>
+            <h1>Atharva<br />Rajoba.</h1>
+            <div className={styles.roleLine}>
+              <span>I work as a</span>
+              <motion.strong
+                key={roles[roleIndex]}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
               >
-                <div className="project-number">0{index + 1}</div>
-                <div className="project-main">
-                  <p className="mini-label">{project.eyebrow}</p>
-                  <h3>{project.title}</h3>
-                  <p className="project-problem">{project.problem}</p>
-                  <div className="project-context">
-                    <span>{project.role}</span>
-                    <span>{project.scope}</span>
-                  </div>
-                </div>
-                <div className="project-proof">
-                  <p className="mini-label">What changed</p>
-                  <p>{project.impact}</p>
-                  <div className="tool-row">
-                    {project.tools.map((tool) => <span key={tool}>{tool}</span>)}
-                  </div>
-                  <div className="project-actions">
-                    <Link href={`/projects/${project.slug}`}>
-                      Read case study <ArrowRight size={16} />
-                    </Link>
-                    {project.repository ? (
-                      <a href={project.repository} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
-                        <ExternalLink size={17} />
-                      </a>
-                    ) : null}
-                  </div>
-                </div>
-              </motion.article>
-            </Reveal>
-          ))}
+                {roles[roleIndex]}
+              </motion.strong>
+            </div>
+            <p className={styles.heroSummary}>
+              I translate business questions, user needs, and raw data into clear decisions teams can act on.
+            </p>
+            <div className={styles.heroActions}>
+              <a className={styles.primaryAction} href="#projects">View selected work <ArrowRight size={18} /></a>
+              <a className={styles.secondaryAction} href="/Atharva-Analyst-Resume.pdf" download>
+                Download resume <Download size={17} />
+              </a>
+              <a className={styles.textAction} href="#contact">Let&apos;s talk <ArrowUpRight size={17} /></a>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className={styles.heroNote}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.35, duration: 0.6 }}
+          >
+            <span>Current focus</span>
+            <strong>Business analysis at the intersection of product, operations, and data.</strong>
+          </motion.div>
         </div>
 
-        <div className="project-grid">
-          {projects.filter((project) => !project.featured).map((project, index) => (
-            <Reveal key={project.slug} delay={index * 0.06}>
-              <motion.article whileHover={{ y: -6 }} className="project-card">
-                <div className="project-card-head">
-                  <span>0{index + 4} / {project.eyebrow}</span>
-                  <ArrowUpRight size={20} />
-                </div>
-                <h3>{project.title}</h3>
-                <p>{project.problem}</p>
-                <div className="tool-row">
-                  {project.tools.slice(0, 3).map((tool) => <span key={tool}>{tool}</span>)}
-                </div>
-                <Link href={`/projects/${project.slug}`}>View analysis <ArrowRight size={15} /></Link>
-              </motion.article>
-            </Reveal>
+        <div className={styles.heroStats}>
+          {credibility.map((item) => (
+            <div key={item.label}>
+              <strong>{item.value}</strong>
+              <span>{item.label}</span>
+            </div>
           ))}
         </div>
-      </Section>
+      </section>
 
       <Section
-        id="experience"
-        eyebrow="Experience"
-        index="04"
-        title="From product discovery to operational execution."
-        intro="Three internships, each adding a different layer to how I investigate problems and move work forward."
+        id="about"
+        eyebrow="About"
+        title="A versatile analyst who starts with the business question."
+        intro="Computer Science undergraduate specializing in IoT & Intelligent Systems, with experience across business research, product workflows, data analytics, and applied machine learning."
       >
-        <div className="experience-list">
-          {experiences.map((experience, index) => (
-            <Reveal key={experience.company} delay={index * 0.07}>
-              <article className="experience-row">
-                <div className="experience-meta">
+        <div className={styles.aboutLayout}>
+          <Reveal>
+            <div className={styles.aboutStatement}>
+              <p>
+                I use SQL, Python, Power BI, market research, and structured problem-solving to turn fragmented information into practical next steps. My work spans customer retention, marketplace performance, procurement risk, product validation, and AI-enabled workflows.
+              </p>
+              <p>
+                A published researcher with international conference recognition, I bring the same evidence-first discipline to business and product decisions.
+              </p>
+              <a href="#experience">See experience <ArrowRight size={16} /></a>
+            </div>
+          </Reveal>
+
+          <div className={styles.roleRail}>
+            {profilePillars.map((pillar, index) => (
+              <Reveal key={pillar.title} delay={index * 0.07}>
+                <article>
                   <span>0{index + 1}</span>
-                  <p>{experience.period}</p>
-                </div>
-                <div className="experience-title">
-                  <div className="experience-company">
-                    <span className={`experience-logo experience-logo--${experience.logoPresentation}`}>
-                      <Image
-                        src={experience.logo}
-                        alt={experience.logoAlt}
-                        width={140}
-                        height={72}
-                        sizes="140px"
-                      />
-                    </span>
-                    <p>{experience.company}</p>
+                  <div>
+                    <h3>{pillar.title}</h3>
+                    <p>{pillar.focus}</p>
+                    <small>{pillar.evidence}</small>
                   </div>
-                  <h3>{experience.role}</h3>
-                  <span className="experience-summary">{experience.summary}</span>
-                </div>
-                <ul>
-                  {experience.points.map((point) => (
-                    <li key={point}><CheckCircle2 size={16} />{point}</li>
-                  ))}
-                </ul>
-              </article>
-            </Reveal>
-          ))}
+                </article>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </Section>
 
       <Section
-        id="capabilities"
-        tint
-        eyebrow="Capabilities"
-        index="05"
-        title="Tools in service of the question."
-        intro="The portfolio is intentionally organized by the work I can do, then by the technologies that support it."
+        id="skills"
+        tone="soft"
+        eyebrow="Skills"
+        title="Tools selected for the problem, not the trend."
+        intro="A focused toolkit for understanding requirements, investigating performance, and communicating what should happen next."
       >
-        <div className="capability-grid">
+        <div className={styles.skillsGrid}>
           {skills.map((skill, index) => (
             <Reveal key={skill.title} delay={index * 0.06}>
-              <motion.article whileHover={{ y: -5 }} className="capability-card">
-                <div className="capability-index">0{index + 1}</div>
+              <motion.article className={styles.skillCard} whileHover={{ y: -6 }}>
+                <div className={`${styles.skillIcon} ${styles[`accent${index + 1}`]}`}>
+                  {index === 0 ? <BriefcaseBusiness size={22} /> : index === 1 ? <ArrowUpRight size={22} /> : index === 2 ? <FileText size={22} /> : <Link2 size={22} />}
+                </div>
+                <span>0{index + 1}</span>
                 <h3>{skill.title}</h3>
                 <p>{skill.summary}</p>
-                <div className="capability-tags">
+                <div className={styles.skillTags}>
                   {skill.items.map((item) => <span key={item}>{item}</span>)}
                 </div>
               </motion.article>
@@ -368,248 +229,177 @@ export default function Portfolio() {
       </Section>
 
       <Section
-        id="credentials"
-        dark
-        eyebrow="Credibility"
-        index="06"
-        title="Research depth. Practical range."
-        intro="Academic work strengthened how I evaluate evidence; professional learning keeps the toolkit current."
+        id="projects"
+        eyebrow="Selected projects"
+        title="Work that moves from analysis to action."
+        intro="Six concise case studies across product, customer, marketplace, marketing, procurement, and operations analytics."
       >
-        <div className="credentials-layout">
-          <div className="research-stack">
-            {research.map((item, index) => (
-              <Reveal key={item.title} delay={index * 0.08}>
-                <article className="research-item">
-                  <a
-                    className="research-paper-preview"
-                    href={item.pdf}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`Open ${item.title} PDF`}
-                  >
-                    <Image
-                      src={item.preview}
-                      alt={`First page of ${item.title}`}
-                      width={612}
-                      height={792}
-                      sizes="220px"
-                    />
-                    <span><FileText size={15} />Open paper</span>
-                  </a>
-                  <div className="research-copy">
-                    <div className="research-meta">
-                      <p className="mini-label">{item.venue}</p>
-                      <span className="research-signal">{item.signal}</span>
+        <div className={styles.projectsGrid}>
+          {projects.map((project, index) => (
+            <Reveal key={project.slug} delay={(index % 3) * 0.06}>
+              <motion.article className={`${styles.projectCard} ${styles[projectAccents[index]]}`} whileHover={{ y: -7 }}>
+                <div className={styles.projectTopline}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <small>{project.eyebrow}</small>
+                </div>
+                <h3>{project.title}</h3>
+                <p>{project.problem}</p>
+                <div className={styles.projectImpact}>
+                  <strong>Outcome</strong>
+                  <span>{project.impact}</span>
+                </div>
+                <div className={styles.projectTools}>
+                  {project.tools.slice(0, 4).map((tool) => <span key={tool}>{tool}</span>)}
+                </div>
+                <div className={styles.projectLinks}>
+                  <Link href={`/projects/${project.slug}`}>Case study <ArrowRight size={15} /></Link>
+                  {project.repository ? (
+                    <a href={project.repository} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
+                      Repository <ExternalLink size={14} />
+                    </a>
+                  ) : null}
+                </div>
+              </motion.article>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        id="experience"
+        tone="soft"
+        eyebrow="Experience & education"
+        title="Practical experience, supported by research depth."
+        intro="Internships across product, machine learning, and business operations, with academic work recognized through two Springer publications."
+      >
+        <div className={styles.experienceLayout}>
+          <div className={styles.timeline}>
+            {experiences.map((experience, index) => (
+              <Reveal key={experience.company} delay={index * 0.07}>
+                <article className={styles.timelineItem}>
+                  <div className={styles.timelineMarker}><span>0{index + 1}</span></div>
+                  <div className={styles.timelineContent}>
+                    <div className={styles.companyLine}>
+                      <span className={`${styles.companyLogo} ${experience.logoPresentation === "icon" ? styles.companyLogoIcon : ""}`}>
+                        <Image src={experience.logo} alt={experience.logoAlt} width={150} height={80} sizes="110px" />
+                      </span>
+                      <div>
+                        <small>{experience.company}</small>
+                        <h3>{experience.role}</h3>
+                      </div>
+                      <time>{experience.period}</time>
                     </div>
-                    <h3>{item.title}</h3>
-                    <p>{item.detail}</p>
-                    <div className="research-links">
-                      <a href={item.doiUrl} target="_blank" rel="noreferrer">
-                        DOI {item.doi}<ExternalLink size={14} />
-                      </a>
-                      <a href={item.pdf} target="_blank" rel="noreferrer">
-                        View full PDF<FileText size={14} />
-                      </a>
-                    </div>
+                    <p>{experience.summary}</p>
+                    <ul>
+                      {experience.points.map((point) => <li key={point}><CheckCircle2 size={15} />{point}</li>)}
+                    </ul>
                   </div>
                 </article>
               </Reveal>
             ))}
           </div>
 
-          <Reveal>
-            <aside className="education-panel">
-              <div className="education-campus">
-                <Image
-                  className="education-backdrop"
-                  src="/education/manipal-university-jaipur.png"
-                  alt=""
-                  fill
-                  sizes="(max-width: 1024px) calc(100vw - 96px), 330px"
-                  aria-hidden="true"
-                />
-                <div className="education-overlay" aria-hidden="true" />
-                <div className="education-mark"><FileText size={24} /></div>
-                <div className="education-campus-copy">
-                  <p className="mini-label">Education</p>
-                  <h3>{education.institution}</h3>
-                </div>
+          <Reveal delay={0.08}>
+            <aside className={styles.educationCard}>
+              <div className={styles.campusVisual}>
+                <Image src="/education/manipal-university-jaipur.png" alt="Manipal University Jaipur campus" fill sizes="(max-width: 900px) 100vw, 420px" />
+                <div />
+                <span><FileText size={20} /></span>
+                <strong>{education.institution}</strong>
               </div>
-              <div className="education-details">
-                <p>{education.degree}</p>
+              <div className={styles.educationBody}>
+                <small>Education</small>
+                <h3>{education.degree}</h3>
                 <p>{education.specialization}</p>
-                <div className="education-data">
-                  <span>{education.period}</span>
-                  <strong>CGPA {education.cgpa}</strong>
-                </div>
-                <div className="certification-list">
-                  <p className="mini-label">Selected certifications</p>
-                  {certifications.map((certification) => (
-                    <span key={certification}><CheckCircle2 size={15} />{certification}</span>
-                  ))}
-                </div>
+                <div><span>{education.period}</span><strong>CGPA {education.cgpa}</strong></div>
               </div>
             </aside>
           </Reveal>
         </div>
 
-        <Reveal>
-          <article className="achievement-feature" id="achievement">
-            <a
-              className="achievement-certificate"
-              href={achievement.image}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="View the Certificate of Excellence at full size"
-            >
-              <Image
-                src={achievement.image}
-                alt={achievement.imageAlt}
-                width={1308}
-                height={1179}
-                sizes="(max-width: 780px) calc(100vw - 64px), 520px"
-              />
-              <span><ExternalLink size={15} />View certificate</span>
-            </a>
-
-            <div className="achievement-copy">
-              <p className="mini-label">Research achievement / {achievement.period}</p>
-              <h3>{achievement.title}</h3>
-              <p>{achievement.detail}</p>
-              <div className="achievement-signals">
-                {achievement.signals.map((signal) => <span key={signal}>{signal}</span>)}
+        <div className={styles.researchStrip}>
+          <Reveal>
+            <a className={styles.achievementCard} href={achievement.image} target="_blank" rel="noreferrer">
+              <Image src={achievement.image} alt={achievement.imageAlt} width={1308} height={1179} sizes="280px" />
+              <div>
+                <small>2025 recognition</small>
+                <h3>{achievement.title}</h3>
+                <p>{achievement.detail}</p>
+                <span>View certificate <ArrowUpRight size={14} /></span>
               </div>
-              <p className="achievement-issuer">Awarded by <strong>{achievement.issuer}</strong></p>
-            </div>
-          </article>
-        </Reveal>
+            </a>
+          </Reveal>
+
+          <div className={styles.publications}>
+            {research.map((paper, index) => (
+              <Reveal key={paper.doi} delay={index * 0.06}>
+                <article>
+                  <span>Publication 0{index + 1}</span>
+                  <h3>{paper.title}</h3>
+                  <p>{paper.signal}</p>
+                  <div>
+                    <a href={paper.doiUrl} target="_blank" rel="noreferrer">DOI <ArrowUpRight size={14} /></a>
+                    <a href={paper.pdf} target="_blank" rel="noreferrer">PDF <FileText size={14} /></a>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </Section>
 
-      <Section
-        id="contact"
-        eyebrow="Contact"
-        index="07"
-        title="Have a business problem worth unpacking?"
-        intro="I am open to Business Analyst, Product Analyst, and Data Analyst opportunities where thoughtful analysis leads to action."
-      >
-        <div className="contact-layout">
+      <section className={styles.contact} id="contact">
+        <div className={styles.contactInner}>
           <Reveal>
-            <div className="contact-copy">
-              <div className="contact-status"><span />Available for conversations</div>
-              <h3>Let&apos;s make the next decision clearer.</h3>
-              <p>Share the role, team, or business problem. I will get back to you directly.</p>
-              <div className="contact-links">
-                <ContactLink icon={<Mail size={18} />} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
-                <ContactLink icon={<Phone size={18} />} label="Phone" value={contact.phoneDisplay} href={`tel:${contact.phoneHref}`} />
-                <ContactLink icon={<Link2 size={18} />} label="LinkedIn" value="atharva-rajoba" href={contact.linkedin} external />
-                <ContactLink icon={<AtSign size={18} />} label="GitHub" value="atharva1845" href={contact.github} external />
-              </div>
-            </div>
+            <p>Contact</p>
+            <h2>Let&apos;s turn the next question into a clear decision.</h2>
+            <span>I&apos;m open to Business Analyst, Product Analyst, and Data Analyst opportunities.</span>
           </Reveal>
 
           <Reveal delay={0.08}>
-            <form className="contact-form" onSubmit={handleContact}>
-              <div className="form-grid">
-                <Field name="name" label="Name" placeholder="Your name" required />
-                <Field name="email" label="Email" placeholder="name@company.com" type="email" required />
-              </div>
-              <Field name="subject" label="Subject" placeholder="Business Analyst opportunity" required />
-              <label>
-                <span>Message</span>
-                <textarea suppressHydrationWarning name="message" rows={5} placeholder="Tell me about the role, team, or problem." required />
-              </label>
-              <button suppressHydrationWarning type="submit">Open email <Send size={17} /></button>
-            </form>
+            <div className={styles.contactActions}>
+              <a className={styles.contactPrimary} href={`mailto:${contact.email}`}>Start a conversation <Mail size={18} /></a>
+              <a href={`tel:${contact.phoneHref}`}><Phone size={17} />{contact.phoneDisplay}</a>
+              <a href={contact.linkedin} target="_blank" rel="noreferrer"><Link2 size={17} />LinkedIn</a>
+              <a href={contact.github} target="_blank" rel="noreferrer"><AtSign size={17} />GitHub</a>
+            </div>
           </Reveal>
         </div>
-      </Section>
+      </section>
 
-      <footer>
-        <div className="section-shell footer-inner">
-          <div><strong>AR</strong><span>Atharva Rajoba</span></div>
-          <p>Business analysis first. Product and data fluency built in.</p>
-          <a href="#home">Back to top <ArrowUpRight size={15} /></a>
-        </div>
+      <footer className={styles.footer}>
+        <a className={styles.brand} href="#home"><span>AR</span><strong>Atharva Rajoba</strong></a>
+        <p>{siteMeta.location} · Business, product, and data analysis</p>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
       </footer>
     </main>
-  );
-}
-
-function Navbar({
-  darkMode,
-  menuOpen,
-  setDarkMode,
-  setMenuOpen,
-}: {
-  darkMode: boolean;
-  menuOpen: boolean;
-  setDarkMode: (value: boolean) => void;
-  setMenuOpen: (value: boolean) => void;
-}) {
-  return (
-    <header className="site-header">
-      <nav className="section-shell nav-shell" aria-label="Primary navigation">
-        <a className="brand-mark" href="#home" aria-label="Atharva Rajoba, home">
-          <span>AR</span>
-          <div><strong>Atharva Rajoba</strong><small>Analyst portfolio</small></div>
-        </a>
-
-        <div className="desktop-nav">
-          {navItems.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
-        </div>
-
-        <div className="nav-actions">
-          <a className="nav-resume" href="/Atharva-Analyst-Resume.pdf" download>
-            Resume <Download size={15} />
-          </a>
-          <button suppressHydrationWarning type="button" onClick={() => setDarkMode(!darkMode)} aria-label={darkMode ? "Use light theme" : "Use dark theme"}>
-            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <button suppressHydrationWarning className="menu-button" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
-            {menuOpen ? <X size={19} /> : <Menu size={19} />}
-          </button>
-        </div>
-
-        {menuOpen ? (
-          <div className="mobile-nav">
-            {navItems.map(([label, id]) => (
-              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}<ArrowRight size={16} /></a>
-            ))}
-          </div>
-        ) : null}
-      </nav>
-    </header>
   );
 }
 
 function Section({
   id,
   eyebrow,
-  index,
   title,
   intro,
+  tone,
   children,
-  dark = false,
-  tint = false,
 }: {
   id: string;
   eyebrow: string;
-  index: string;
   title: string;
   intro: string;
+  tone?: "soft";
   children: ReactNode;
-  dark?: boolean;
-  tint?: boolean;
 }) {
   return (
-    <section id={id} className={`content-section${dark ? " section-dark" : ""}${tint ? " section-tint" : ""}`}>
-      <div className="section-shell">
+    <section className={`${styles.section} ${tone ? styles.sectionSoft : ""}`} id={id}>
+      <div className={styles.sectionInner}>
         <Reveal>
-          <div className="section-heading">
-            <div className="section-label"><span>{index}</span>{eyebrow}</div>
+          <div className={styles.sectionHeading}>
+            <p>{eyebrow}</p>
             <div>
               <h2>{title}</h2>
-              <p>{intro}</p>
+              <span>{intro}</span>
             </div>
           </div>
         </Reveal>
@@ -622,71 +412,12 @@ function Section({
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
   return (
     <motion.div
-      initial={false}
-      whileInView={{ opacity: [0.72, 1], y: [16, 0] }}
-      viewport={{ once: true, margin: "-70px" }}
-      transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.55, delay, ease: "easeOut" }}
     >
       {children}
     </motion.div>
-  );
-}
-
-function ActionLink({
-  href,
-  children,
-  icon,
-  variant = "secondary",
-  download = false,
-}: {
-  href: string;
-  children: ReactNode;
-  icon: ReactNode;
-  variant?: "primary" | "secondary";
-  download?: boolean;
-}) {
-  return <a href={href} download={download || undefined} className={`action-link action-${variant}`}>{children}{icon}</a>;
-}
-
-function ContactLink({
-  icon,
-  label,
-  value,
-  href,
-  external = false,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-  href: string;
-  external?: boolean;
-}) {
-  return (
-    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
-      <span>{icon}</span>
-      <div><small>{label}</small><strong>{value}</strong></div>
-      {external ? <ExternalLink size={15} /> : <ArrowRight size={15} />}
-    </a>
-  );
-}
-
-function Field({
-  name,
-  label,
-  placeholder,
-  type = "text",
-  required = false,
-}: {
-  name: string;
-  label: string;
-  placeholder: string;
-  type?: string;
-  required?: boolean;
-}) {
-  return (
-    <label>
-      <span>{label}</span>
-      <input suppressHydrationWarning name={name} type={type} placeholder={placeholder} required={required} />
-    </label>
   );
 }
