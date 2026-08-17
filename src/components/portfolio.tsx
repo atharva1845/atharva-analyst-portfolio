@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { type ReactNode, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
 import {
   ArrowRight,
   ArrowUpRight,
-  AtSign,
   BriefcaseBusiness,
   CheckCircle2,
   Download,
@@ -252,10 +251,9 @@ export default function Portfolio() {
                   {project.tools.slice(0, 4).map((tool) => <span key={tool}>{tool}</span>)}
                 </div>
                 <div className={styles.projectLinks}>
-                  <Link href={`/projects/${project.slug}`}>Case study <ArrowRight size={15} /></Link>
                   {project.repository ? (
                     <a href={project.repository} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
-                      Repository <ExternalLink size={14} />
+                      <FaGithub size={15} /> Repository <ExternalLink size={14} />
                     </a>
                   ) : null}
                 </div>
@@ -317,29 +315,41 @@ export default function Portfolio() {
           </Reveal>
         </div>
 
-        <div className={styles.researchStrip}>
+        <div className={styles.researchShowcase}>
           <Reveal>
-            <a className={styles.achievementCard} href={achievement.image} target="_blank" rel="noreferrer">
-              <Image src={achievement.image} alt={achievement.imageAlt} width={1308} height={1179} sizes="280px" />
-              <div>
+            <a className={styles.achievementFeature} href={achievement.image} target="_blank" rel="noreferrer">
+              <div className={styles.achievementImage}>
+                <Image src={achievement.image} alt={achievement.imageAlt} width={1308} height={1179} sizes="(max-width: 780px) calc(100vw - 72px), 390px" />
+              </div>
+              <div className={styles.achievementCopy}>
                 <small>2025 recognition</small>
                 <h3>{achievement.title}</h3>
                 <p>{achievement.detail}</p>
+                <div className={styles.achievementSignals}>
+                  {achievement.signals.map((signal) => <span key={signal}>{signal}</span>)}
+                </div>
                 <span>View certificate <ArrowUpRight size={14} /></span>
               </div>
             </a>
           </Reveal>
 
-          <div className={styles.publications}>
+          <div className={styles.publicationGrid}>
             {research.map((paper, index) => (
               <Reveal key={paper.doi} delay={index * 0.06}>
-                <article>
-                  <span>Publication 0{index + 1}</span>
-                  <h3>{paper.title}</h3>
-                  <p>{paper.signal}</p>
-                  <div>
-                    <a href={paper.doiUrl} target="_blank" rel="noreferrer">DOI <ArrowUpRight size={14} /></a>
-                    <a href={paper.pdf} target="_blank" rel="noreferrer">PDF <FileText size={14} /></a>
+                <article className={styles.publicationCard}>
+                  <a className={styles.paperPreview} href={paper.pdf} target="_blank" rel="noreferrer" aria-label={`Open ${paper.title} PDF`}>
+                    <Image src={paper.preview} alt={`First page of ${paper.title}`} width={612} height={792} sizes="190px" />
+                    <span>Open paper <ArrowUpRight size={13} /></span>
+                  </a>
+                  <div className={styles.paperCopy}>
+                    <span>Publication 0{index + 1}</span>
+                    <h3>{paper.title}</h3>
+                    <p>{paper.detail}</p>
+                    <strong>{paper.signal}</strong>
+                    <div>
+                      <a href={paper.doiUrl} target="_blank" rel="noreferrer">DOI <ArrowUpRight size={14} /></a>
+                      <a href={paper.pdf} target="_blank" rel="noreferrer">Full PDF <FileText size={14} /></a>
+                    </div>
                   </div>
                 </article>
               </Reveal>
@@ -360,17 +370,19 @@ export default function Portfolio() {
             <div className={styles.contactActions}>
               <a className={styles.contactPrimary} href={`mailto:${contact.email}`}>Start a conversation <Mail size={18} /></a>
               <a href={`tel:${contact.phoneHref}`}><Phone size={17} />{contact.phoneDisplay}</a>
-              <a href={contact.linkedin} target="_blank" rel="noreferrer"><Link2 size={17} />LinkedIn</a>
-              <a href={contact.github} target="_blank" rel="noreferrer"><AtSign size={17} />GitHub</a>
+              <a href={contact.linkedin} target="_blank" rel="noreferrer"><FaLinkedinIn size={17} />LinkedIn</a>
+              <a href={contact.github} target="_blank" rel="noreferrer"><FaGithub size={17} />GitHub</a>
             </div>
           </Reveal>
         </div>
       </section>
 
       <footer className={styles.footer}>
-        <a className={styles.brand} href="#home"><span>AR</span><strong>Atharva Rajoba</strong></a>
-        <p>{siteMeta.location} · Business, product, and data analysis</p>
-        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        <div className={styles.footerInner}>
+          <a className={styles.brand} href="#home"><span>AR</span><strong>Atharva Rajoba</strong></a>
+          <p>{siteMeta.location} · Business, product, and data analysis</p>
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        </div>
       </footer>
     </main>
   );

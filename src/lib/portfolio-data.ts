@@ -2,7 +2,7 @@ export const siteMeta = {
   name: "Atharva Rajoba",
   title: "Business Analyst | Product Analyst | Data Analyst",
   tagline: "Turning business questions into clear, evidence-backed decisions.",
-  location: "Jaipur, India",
+  location: "Mumbai, India",
   availability: "Open to analyst opportunities",
 };
 
@@ -376,8 +376,8 @@ export const achievement = {
 
 export const education = {
   institution: "Manipal University Jaipur",
-  degree: "B.Tech in Computer Science Engineering",
-  specialization: "IoT & Intelligent Systems",
+  degree: "B.Tech (Honours) in Computer Science Engineering",
+  specialization: "with specialization in IoT & Intelligent Systems",
   period: "2022 - 2026",
   cgpa: "6.96",
 };
