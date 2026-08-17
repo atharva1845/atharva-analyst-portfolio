@@ -318,7 +318,7 @@ export default function Portfolio() {
                 </div>
                 <div className="experience-title">
                   <div className="experience-company">
-                    <span className="experience-logo">
+                    <span className={`experience-logo experience-logo--${experience.logoPresentation}`}>
                       <Image
                         src={experience.logo}
                         alt={experience.logoAlt}

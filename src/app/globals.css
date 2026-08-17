@@ -882,6 +882,21 @@ a {
   object-fit: contain;
 }
 
+.experience-logo--icon {
+  width: 68px;
+  height: 68px;
+  flex-basis: 68px;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.experience-logo--icon img {
+  width: 62px;
+  height: 62px;
+}
+
 .experience-company > p {
   margin: 0;
   color: var(--teal);
@@ -1616,6 +1631,7 @@ footer {
   .experience-row ul { grid-column: auto; }
   .experience-meta { justify-content: space-between; }
   .experience-logo { width: 92px; flex-basis: 92px; }
+  .experience-logo--icon { width: 68px; flex-basis: 68px; }
   .research-item { grid-template-columns: 1fr; }
   .research-paper-preview { min-height: 420px; }
   .achievement-feature { grid-template-columns: 1fr; gap: 30px; }
