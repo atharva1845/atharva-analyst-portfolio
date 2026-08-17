@@ -293,6 +293,8 @@ export const projects = [
 export const experiences = [
   {
     company: "SwitchiT",
+    logo: "/company-logos/switchit.png",
+    logoAlt: "SwitchiT logo",
     role: "Product Management Intern",
     period: "Jan 2026 - Present",
     summary: "Supporting product discovery, process improvement, and go-to-market execution for AI-enabled workflows.",
@@ -304,6 +306,8 @@ export const experiences = [
   },
   {
     company: "Infosys Springboard",
+    logo: "/company-logos/infosys-springboard.jpg",
+    logoAlt: "Infosys Springboard logo",
     role: "Machine Learning Intern",
     period: "Oct 2025 - Dec 2025",
     summary: "Worked across product logic, data preparation, and evaluation for the SwiftVisa eligibility experience.",
@@ -315,6 +319,8 @@ export const experiences = [
   },
   {
     company: "Shark Exports",
+    logo: "/company-logos/shark-exports.png",
+    logoAlt: "Shark Exports logo",
     role: "Business Development & Operations Intern",
     period: "May 2025 - Aug 2025",
     summary: "Supported market research, commercial analysis, and export operations for African markets.",

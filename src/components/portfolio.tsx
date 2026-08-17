@@ -316,9 +316,20 @@ export default function Portfolio() {
                   <p>{experience.period}</p>
                 </div>
                 <div className="experience-title">
-                  <p>{experience.company}</p>
+                  <div className="experience-company">
+                    <span className="experience-logo">
+                      <Image
+                        src={experience.logo}
+                        alt={experience.logoAlt}
+                        width={140}
+                        height={72}
+                        sizes="140px"
+                      />
+                    </span>
+                    <p>{experience.company}</p>
+                  </div>
                   <h3>{experience.role}</h3>
-                  <span>{experience.summary}</span>
+                  <span className="experience-summary">{experience.summary}</span>
                 </div>
                 <ul>
                   {experience.points.map((point) => (
