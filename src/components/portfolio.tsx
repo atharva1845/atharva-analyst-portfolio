@@ -25,6 +25,7 @@ import {
   X,
 } from "lucide-react";
 import {
+  achievement,
   certifications,
   contact,
   credibility,
@@ -379,11 +380,37 @@ export default function Portfolio() {
             {research.map((item, index) => (
               <Reveal key={item.title} delay={index * 0.08}>
                 <article className="research-item">
-                  <div className="research-signal">{item.signal}</div>
-                  <div>
-                    <p className="mini-label">{item.venue}</p>
+                  <a
+                    className="research-paper-preview"
+                    href={item.pdf}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Open ${item.title} PDF`}
+                  >
+                    <Image
+                      src={item.preview}
+                      alt={`First page of ${item.title}`}
+                      width={612}
+                      height={792}
+                      sizes="220px"
+                    />
+                    <span><FileText size={15} />Open paper</span>
+                  </a>
+                  <div className="research-copy">
+                    <div className="research-meta">
+                      <p className="mini-label">{item.venue}</p>
+                      <span className="research-signal">{item.signal}</span>
+                    </div>
                     <h3>{item.title}</h3>
                     <p>{item.detail}</p>
+                    <div className="research-links">
+                      <a href={item.doiUrl} target="_blank" rel="noreferrer">
+                        DOI {item.doi}<ExternalLink size={14} />
+                      </a>
+                      <a href={item.pdf} target="_blank" rel="noreferrer">
+                        View full PDF<FileText size={14} />
+                      </a>
+                    </div>
                   </div>
                 </article>
               </Reveal>
@@ -410,6 +437,37 @@ export default function Portfolio() {
             </aside>
           </Reveal>
         </div>
+
+        <Reveal>
+          <article className="achievement-feature" id="achievement">
+            <a
+              className="achievement-certificate"
+              href={achievement.image}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="View the Certificate of Excellence at full size"
+            >
+              <Image
+                src={achievement.image}
+                alt={achievement.imageAlt}
+                width={1308}
+                height={1179}
+                sizes="(max-width: 780px) calc(100vw - 64px), 520px"
+              />
+              <span><ExternalLink size={15} />View certificate</span>
+            </a>
+
+            <div className="achievement-copy">
+              <p className="mini-label">Research achievement / {achievement.period}</p>
+              <h3>{achievement.title}</h3>
+              <p>{achievement.detail}</p>
+              <div className="achievement-signals">
+                {achievement.signals.map((signal) => <span key={signal}>{signal}</span>)}
+              </div>
+              <p className="achievement-issuer">Awarded by <strong>{achievement.issuer}</strong></p>
+            </div>
+          </article>
+        </Reveal>
       </Section>
 
       <Section

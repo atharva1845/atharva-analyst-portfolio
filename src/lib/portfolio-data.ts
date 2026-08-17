@@ -334,18 +334,36 @@ export const experiences = [
 
 export const research = [
   {
-    title: "Shor's Algorithm",
-    venue: "Springer publication | ISBM, Bangkok | 2025",
-    detail: "Research exploring quantum factorization and the implications of Shor's algorithm for modern cryptography.",
-    signal: "International conference",
+    title: "Breaking Integer Factorization Using Shor's Algorithm: A Practical Approach with IBM Qiskit",
+    venue: "Springer Nature | Smart Innovation, Systems and Technologies | 2026 | pp. 20-28",
+    detail: "A hardware-focused implementation of Shor's algorithm using IBM Quantum resources and Qiskit to factor 221, with analysis of success probability and noisy-hardware limitations.",
+    signal: "IBM Qiskit research",
+    doi: "10.1007/978-3-032-12983-3_3",
+    doiUrl: "https://doi.org/10.1007/978-3-032-12983-3_3",
+    pdf: "/research-papers/shors-algorithm.pdf",
+    preview: "/research-papers/shors-algorithm-preview.png",
   },
   {
-    title: "Fake News Detection",
-    venue: "Springer publication | MCT4SD | 2025",
-    detail: "Machine learning research on reliable fake-news classification and model evaluation.",
+    title: "A Lightweight Hybrid Term Frequency-Inverse Document Frequency Ensemble of Logistic Regression and Naive Bayes for Fake News Detection",
+    venue: "Springer Nature | Lecture Notes in Networks and Systems | 2026 | pp. 331-341",
+    detail: "An interpretable hybrid TF-IDF, Logistic Regression, and Naive Bayes framework evaluated on approximately 44,000 news articles, achieving 99.19% accuracy.",
     signal: "ROC-AUC 0.9996",
+    doi: "10.1007/978-3-032-25187-9_32",
+    doiUrl: "https://doi.org/10.1007/978-3-032-25187-9_32",
+    pdf: "/research-papers/fake-news-detection.pdf",
+    preview: "/research-papers/fake-news-detection-preview.png",
   },
 ];
+
+export const achievement = {
+  title: "Certificate of Excellence in Research",
+  issuer: "Manipal University Jaipur",
+  period: "2025",
+  detail: "Awarded for outstanding research performance in the Department of IoT & Intelligent Systems, recognizing the publication of two Springer research papers.",
+  image: "/achievements/research-excellence-certificate.png",
+  imageAlt: "Manipal University Jaipur Certificate of Excellence awarded to Atharva Rajoba for outstanding research performance in 2025",
+  signals: ["2 Springer publications", "Research excellence", "IoT & IS"],
+};
 
 export const education = {
   institution: "Manipal University Jaipur",
