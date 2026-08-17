@@ -306,7 +306,7 @@ export const experiences = [
   },
   {
     company: "Infosys Springboard",
-    logo: "/company-logos/infosys-springboard.jpg",
+    logo: "/company-logos/infosys-springboard.png",
     logoAlt: "Infosys Springboard logo",
     role: "Machine Learning Intern",
     period: "Oct 2025 - Dec 2025",
