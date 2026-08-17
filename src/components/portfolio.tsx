@@ -419,7 +419,6 @@ export default function Portfolio() {
 
           <Reveal>
             <aside className="education-panel">
-              <div className="education-mark"><FileText size={24} /></div>
               <div className="education-campus">
                 <Image
                   className="education-backdrop"
@@ -430,22 +429,25 @@ export default function Portfolio() {
                   aria-hidden="true"
                 />
                 <div className="education-overlay" aria-hidden="true" />
+                <div className="education-mark"><FileText size={24} /></div>
                 <div className="education-campus-copy">
                   <p className="mini-label">Education</p>
                   <h3>{education.institution}</h3>
                 </div>
               </div>
-              <p>{education.degree}</p>
-              <p>{education.specialization}</p>
-              <div className="education-data">
-                <span>{education.period}</span>
-                <strong>CGPA {education.cgpa}</strong>
-              </div>
-              <div className="certification-list">
-                <p className="mini-label">Selected certifications</p>
-                {certifications.map((certification) => (
-                  <span key={certification}><CheckCircle2 size={15} />{certification}</span>
-                ))}
+              <div className="education-details">
+                <p>{education.degree}</p>
+                <p>{education.specialization}</p>
+                <div className="education-data">
+                  <span>{education.period}</span>
+                  <strong>CGPA {education.cgpa}</strong>
+                </div>
+                <div className="certification-list">
+                  <p className="mini-label">Selected certifications</p>
+                  {certifications.map((certification) => (
+                    <span key={certification}><CheckCircle2 size={15} />{certification}</span>
+                  ))}
+                </div>
               </div>
             </aside>
           </Reveal>

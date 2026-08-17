@@ -1112,7 +1112,7 @@ a {
 
 .education-panel {
   height: 100%;
-  padding: 32px;
+  overflow: hidden;
   border: 1px solid #2d3a4b;
   border-radius: 8px;
   background: #172231;
@@ -1121,12 +1121,10 @@ a {
 .education-campus {
   position: relative;
   isolation: isolate;
-  min-height: 190px;
+  min-height: 320px;
   overflow: hidden;
-  margin-bottom: 26px;
-  padding: 26px;
-  border: 1px solid #405066;
-  border-radius: 6px;
+  padding: 32px;
+  border-bottom: 1px solid #405066;
   display: flex;
   align-items: flex-end;
   background: #101a28;
@@ -1155,10 +1153,13 @@ a {
 }
 
 .education-mark {
+  position: absolute;
+  z-index: 1;
+  top: 32px;
+  left: 32px;
   display: grid;
   width: 52px;
   height: 52px;
-  margin-bottom: 24px;
   place-items: center;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1167,7 +1168,11 @@ a {
   color: #74d8ce;
 }
 
-.education-panel > p:not(.mini-label) {
+.education-details {
+  padding: 28px 32px 32px;
+}
+
+.education-details > p:not(.mini-label) {
   margin: 9px 0 0;
   color: #aeb8c6;
   font-size: 0.84rem;
@@ -1634,8 +1639,10 @@ footer {
   .achievement-copy h3 { font-size: 1.85rem; }
   .pillar-card,
   .capability-card,
-  .education-panel,
   .contact-form { padding: 24px; }
+  .education-campus { min-height: 280px; padding: 24px; }
+  .education-mark { top: 24px; left: 24px; }
+  .education-details { padding: 24px; }
   .project-main h3 { font-size: 1.7rem; }
   .project-context span { overflow-wrap: anywhere; }
   .contact-copy h3 { font-size: 2rem; }
