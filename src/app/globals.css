@@ -1111,14 +1111,25 @@ a {
 }
 
 .education-panel {
-  position: relative;
-  isolation: isolate;
   height: 100%;
-  overflow: hidden;
   padding: 32px;
   border: 1px solid #2d3a4b;
   border-radius: 8px;
   background: #172231;
+}
+
+.education-campus {
+  position: relative;
+  isolation: isolate;
+  min-height: 190px;
+  overflow: hidden;
+  margin-bottom: 26px;
+  padding: 26px;
+  border: 1px solid #405066;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  background: #101a28;
 }
 
 .education-backdrop {
@@ -1134,15 +1145,20 @@ a {
   z-index: -1;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(9, 19, 32, 0.72) 0%, rgba(9, 19, 32, 0.84) 52%, rgba(9, 19, 32, 0.96) 100%),
-    linear-gradient(90deg, rgba(9, 19, 32, 0.78), rgba(9, 19, 32, 0.28));
+    linear-gradient(180deg, rgba(9, 19, 32, 0.18) 0%, rgba(9, 19, 32, 0.42) 44%, rgba(9, 19, 32, 0.9) 100%),
+    linear-gradient(90deg, rgba(9, 19, 32, 0.5), rgba(9, 19, 32, 0.08));
+}
+
+.education-campus-copy {
+  position: relative;
+  z-index: 1;
 }
 
 .education-mark {
   display: grid;
   width: 52px;
   height: 52px;
-  margin-bottom: 42px;
+  margin-bottom: 24px;
   place-items: center;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);

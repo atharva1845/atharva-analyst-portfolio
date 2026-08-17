@@ -419,18 +419,22 @@ export default function Portfolio() {
 
           <Reveal>
             <aside className="education-panel">
-              <Image
-                className="education-backdrop"
-                src="/education/manipal-university-jaipur.png"
-                alt=""
-                fill
-                sizes="(max-width: 1024px) calc(100vw - 48px), 390px"
-                aria-hidden="true"
-              />
-              <div className="education-overlay" aria-hidden="true" />
               <div className="education-mark"><FileText size={24} /></div>
-              <p className="mini-label">Education</p>
-              <h3>{education.institution}</h3>
+              <div className="education-campus">
+                <Image
+                  className="education-backdrop"
+                  src="/education/manipal-university-jaipur.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 1024px) calc(100vw - 96px), 330px"
+                  aria-hidden="true"
+                />
+                <div className="education-overlay" aria-hidden="true" />
+                <div className="education-campus-copy">
+                  <p className="mini-label">Education</p>
+                  <h3>{education.institution}</h3>
+                </div>
+              </div>
               <p>{education.degree}</p>
               <p>{education.specialization}</p>
               <div className="education-data">
