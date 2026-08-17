@@ -1,84 +1,78 @@
 "use client";
 
-import { type ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { type FormEvent, type ReactNode, useEffect, useState } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
   AtSign,
-  BarChart3,
-  Brain,
+  BriefcaseBusiness,
   CheckCircle2,
   Database,
   Download,
   ExternalLink,
-  Gauge,
+  FileText,
   Link2,
   Mail,
   Menu,
   Moon,
-  MousePointer2,
   Phone,
+  Route,
   Send,
-  Sparkles,
   Sun,
-  Target,
-  Workflow,
   X,
 } from "lucide-react";
-import { experiences, projects, roles, skills } from "@/lib/portfolio-data";
+import {
+  certifications,
+  contact,
+  credibility,
+  education,
+  experiences,
+  profilePillars,
+  projects,
+  research,
+  roles,
+  siteMeta,
+  skills,
+} from "@/lib/portfolio-data";
 
 const navItems = [
-  ["Home", "home"],
-  ["About", "about"],
-  ["Skills", "skills"],
+  ["Profile", "profile"],
   ["Projects", "projects"],
+  ["Experience", "experience"],
+  ["Capabilities", "capabilities"],
   ["Contact", "contact"],
 ] as const;
 
-const fadeUp = {
-  initial: { opacity: 0, y: 28 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-90px" },
-  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
-};
+const pillarIcons = [BriefcaseBusiness, Route, Database];
 
 function useTyping(words: string[]) {
   const [index, setIndex] = useState(0);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(words[0] ?? "Business Analyst");
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const current = words[index];
-    const complete = text === current;
-    const empty = text.length === 0;
+    const isComplete = text === current;
+    const isEmpty = text.length === 0;
+    const delay = isComplete ? 1550 : deleting ? 36 : 72;
 
-    const timeout = window.setTimeout(
-      () => {
-        if (!deleting && !complete) {
-          setText(current.slice(0, text.length + 1));
-          return;
-        }
-
-        if (!deleting && complete) {
-          setDeleting(true);
-          return;
-        }
-
-        if (deleting && !empty) {
-          setText(current.slice(0, text.length - 1));
-          return;
-        }
-
+    const timer = window.setTimeout(() => {
+      if (!deleting && !isComplete) {
+        setText(current.slice(0, text.length + 1));
+      } else if (!deleting && isComplete) {
+        setDeleting(true);
+      } else if (deleting && !isEmpty) {
+        setText(current.slice(0, text.length - 1));
+      } else {
         setDeleting(false);
         setIndex((value) => (value + 1) % words.length);
-      },
-      complete ? 1200 : deleting ? 38 : 78,
-    );
+      }
+    }, delay);
 
-    return () => window.clearTimeout(timeout);
+    return () => window.clearTimeout(timer);
   }, [deleting, index, text, words]);
 
   return text;
@@ -86,18 +80,29 @@ function useTyping(words: string[]) {
 
 export default function Portfolio() {
   const typedRole = useTyping(roles);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -90]);
+  const progress = useSpring(scrollYProgress, { stiffness: 180, damping: 28, restDelta: 0.001 });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
+  function handleContact(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const subject = String(data.get("subject") || "Analyst opportunity");
+    const message = String(data.get("message") || "");
+    const name = String(data.get("name") || "");
+    const sender = String(data.get("email") || "");
+    const body = `${message}\n\nFrom: ${name}${sender ? ` (${sender})` : ""}`;
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
   return (
-    <main className="min-h-screen overflow-hidden bg-slate-950 text-white">
-      <div className="aurora-bg" />
+    <main className="portfolio-root">
+      <motion.div className="scroll-progress" style={{ scaleX: progress }} />
       <Navbar
         darkMode={darkMode}
         menuOpen={menuOpen}
@@ -105,330 +110,342 @@ export default function Portfolio() {
         setMenuOpen={setMenuOpen}
       />
 
-      <section id="home" className="relative min-h-screen pt-28">
-        <div className="absolute inset-0 -z-10 opacity-50 premium-grid" />
-        <motion.div
-          style={{ y: heroY }}
-          className="section-shell grid min-h-[calc(100vh-7rem)] items-center gap-12 pb-20 lg:grid-cols-[1.08fr_.92fr]"
-        >
-          <motion.div initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-bold text-teal-100 backdrop-blur">
-              <Sparkles size={16} />
-              Turning Data into Business Decisions
+      <section id="home" className="hero-section">
+        <Image
+          src="/analyst-workspace-hero.png"
+          alt="Business analysis workspace with process maps, data tables, and decision charts"
+          fill
+          priority
+          sizes="100vw"
+          className="hero-image"
+        />
+        <div className="hero-shade" />
+        <div className="hero-grid" />
+
+        <div className="section-shell hero-inner">
+          <div className="hero-copy">
+            <div className="availability-pill">
+              <span className="availability-dot" />
+              {siteMeta.availability}
             </div>
 
-            <h1 className="mt-8 max-w-5xl text-balance text-6xl font-black leading-[0.88] tracking-tight sm:text-8xl lg:text-9xl">
-              Atharva <span className="text-gradient">Rajoba</span>
-            </h1>
-
-            <div className="mt-7 flex min-h-12 flex-wrap items-center gap-2 text-2xl font-bold text-slate-300 sm:text-3xl">
-              <span>Building as a</span>
-              <span className="metric-font rounded-full border border-teal-300/30 bg-teal-300/10 px-4 py-2 text-teal-100">
-                {typedRole}
-                <span className="animate-pulse">|</span>
-              </span>
+            <p className="hero-kicker">Business clarity, backed by data</p>
+            <h1>Atharva Rajoba</h1>
+            <div className="hero-role" aria-live="polite">
+              <span>{typedRole}</span>
+              <span className="typing-caret" aria-hidden="true" />
             </div>
-
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
-              Computer Science undergraduate specializing in IoT & Intelligent Systems,
-              turning raw data into business stories through SQL, Python, Power BI,
-              machine learning, and research-backed analysis.
+            <p className="hero-summary">
+              I map business problems, examine the evidence, and turn complexity into workflows,
+              product decisions, and measurable next steps.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href="#projects" icon={<BarChart3 size={18} />} primary>
-                View Projects
-              </ButtonLink>
-              <ButtonLink href="/Atharva-Rajoba-Resume.pdf" icon={<Download size={18} />}>
-                Download Resume
-              </ButtonLink>
-              <ButtonLink href="#contact" icon={<Send size={18} />}>
-                Contact Me
-              </ButtonLink>
+            <div className="hero-actions">
+              <ActionLink href="#projects" variant="primary" icon={<ArrowRight size={18} />}>
+                Explore case studies
+              </ActionLink>
+              <ActionLink href="/Atharva-Analyst-Resume.pdf" icon={<Download size={18} />} download>
+                Resume
+              </ActionLink>
+              <ActionLink href="#contact" icon={<Mail size={18} />}>
+                Start a conversation
+              </ActionLink>
             </div>
+          </div>
 
-            <div className="mt-10 grid max-w-2xl grid-cols-3 gap-3">
+          <div className="hero-note" aria-label="Core approach">
+            <span>01</span>
+            <p>Question</p>
+            <ArrowRight size={15} />
+            <p>Evidence</p>
+            <ArrowRight size={15} />
+            <p>Decision</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="signal-band" aria-label="Selected portfolio evidence">
+        <div className="section-shell signal-grid">
+          {credibility.map((item, index) => (
+            <Reveal key={item.label} delay={index * 0.05}>
+              <div className="signal-item">
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <Section
+        id="profile"
+        eyebrow="Analyst profile"
+        index="02"
+        title="One analyst, three useful lenses."
+        intro="Business analysis leads the work. Product thinking shapes the experience. Data analysis keeps the recommendation honest."
+      >
+        <div className="pillar-grid">
+          {profilePillars.map((pillar, index) => {
+            const Icon = pillarIcons[index];
+            return (
+              <Reveal key={pillar.title} delay={index * 0.08}>
+                <motion.article
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className={`pillar-card pillar-${pillar.accent}`}
+                >
+                  <div className="pillar-topline">
+                    <span>0{index + 1}</span>
+                    <Icon size={22} />
+                  </div>
+                  <h3>{pillar.title}</h3>
+                  <p className="pillar-focus">{pillar.focus}</p>
+                  <div className="pillar-evidence">
+                    <span>Evidence</span>
+                    <p>{pillar.evidence}</p>
+                  </div>
+                </motion.article>
+              </Reveal>
+            );
+          })}
+        </div>
+
+        <Reveal>
+          <div className="approach-row">
+            <div>
+              <p className="mini-label">How I work</p>
+              <h3>Structure the ambiguity before building the answer.</h3>
+            </div>
+            <div className="approach-steps">
               {[
-                ["4", "Case studies"],
-                ["0.9996", "ROC-AUC"],
-                ["150+", "Outreach"],
-              ].map(([value, label]) => (
-                <div key={label} className="rounded-lg border border-white/10 bg-white/[0.06] p-4 backdrop-blur">
-                  <p className="metric-font text-2xl font-black text-white">{value}</p>
-                  <p className="mt-1 text-xs font-semibold uppercase text-slate-400">{label}</p>
+                ["Frame", "Clarify the user, business question, and decision."],
+                ["Investigate", "Map the process and validate the available evidence."],
+                ["Translate", "Present findings as actions, tradeoffs, and next steps."],
+              ].map(([title, copy], index) => (
+                <div key={title}>
+                  <span>{index + 1}</span>
+                  <p><strong>{title}</strong>{copy}</p>
                 </div>
               ))}
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30, rotate: 1 }}
-            animate={{ opacity: 1, x: 0, rotate: 0 }}
-            transition={{ duration: 0.9, delay: 0.1 }}
-            className="relative"
-          >
-            <div className="absolute -inset-6 -z-10 bg-gradient-to-br from-teal-400/25 via-fuchsia-400/20 to-amber-300/20 blur-3xl" />
-            <div className="premium-card overflow-hidden p-4">
-              <div className="flex items-center justify-between px-2 pb-4">
-                <div>
-                  <p className="text-xs font-bold uppercase text-slate-400">Live portfolio system</p>
-                  <p className="mt-1 text-lg font-black">Recruiter-ready analytics view</p>
-                </div>
-                <MousePointer2 className="text-teal-200" />
-              </div>
-              <Image
-                src="/analytics-command-view.png"
-                width={1200}
-                height={760}
-                priority
-                alt="Analytics portfolio visual"
-                className="h-auto w-full rounded-lg border border-white/10 object-cover"
-              />
-              <div className="grid grid-cols-3 gap-3 pt-4">
-                {[
-                  ["SQL", "query logic"],
-                  ["Power BI", "visual model"],
-                  ["Python", "analysis layer"],
-                ].map(([title, label], index) => (
-                  <motion.div
-                    key={title}
-                    animate={{ y: [0, index === 1 ? -8 : 8, 0] }}
-                    transition={{ duration: 5 + index, repeat: Infinity, ease: "easeInOut" }}
-                    className="rounded-lg border border-white/10 bg-white/[0.07] p-3"
-                  >
-                    <p className="metric-font font-black">{title}</p>
-                    <p className="mt-1 text-xs text-slate-400">{label}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      <Section id="about" eyebrow="About" title="A portfolio that reads like business judgment, not a resume dump.">
-        <motion.div {...fadeUp} className="grid gap-5 lg:grid-cols-[1fr_.8fr]">
-          <div className="premium-card p-6">
-            <p className="text-xl leading-9 text-slate-300">
-              Computer Science undergraduate specializing in IoT & Intelligent Systems
-              with strong expertise in data analytics, business research, and applied
-              machine learning. Experienced in transforming raw data into actionable
-              insights through SQL, Python, and Power BI. Published researcher with
-              international conference recognition. Strong focus on solving real-world
-              business problems using data.
-            </p>
           </div>
-          <div className="grid gap-4">
-            {[
-              {
-                icon: Database,
-                title: "Raw data",
-                copy: "Clean, join, model, and validate",
-              },
-              {
-                icon: Target,
-                title: "Business question",
-                copy: "Frame what decision needs to change",
-              },
-              {
-                icon: Workflow,
-                title: "Final story",
-                copy: "Deliver action, tradeoffs, and next steps",
-              },
-            ].map(({ icon: Icon, title, copy }) => (
-              <div key={title} className="premium-card flex items-center gap-4 p-5">
-                <span className="grid h-12 w-12 place-items-center rounded-lg bg-white/10 text-teal-200">
-                  <Icon size={22} />
-                </span>
-                <span>
-                  <span className="block font-black">{title}</span>
-                  <span className="mt-1 block text-sm text-slate-400">{copy}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        </Reveal>
       </Section>
 
-      <Section id="skills" eyebrow="Skills" title="The stack behind the story.">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          {skills.map((skill, index) => (
-            <motion.article
-              key={skill.title}
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: index * 0.05 }}
-              whileHover={{ y: -10, rotate: index % 2 ? -1 : 1 }}
-              className="premium-card group overflow-hidden p-5"
-            >
-              <div className={`h-1.5 w-20 rounded-full bg-gradient-to-r ${skill.accent}`} />
-              <h3 className="mt-5 text-xl font-black">{skill.title}</h3>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {skill.items.map((item) => (
-                  <span key={item} className="rounded-full border border-white/10 bg-white/[0.08] px-3 py-1.5 text-sm font-semibold text-slate-200">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </Section>
-
-      <Section id="projects" eyebrow="Projects" title="Case studies designed like decisions.">
-        <div className="grid gap-5 md:grid-cols-2">
-          {projects.map((project, index) => (
-            <motion.article
-              key={project.slug}
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: index * 0.06 }}
-              whileHover={{ y: -12 }}
-              className="premium-card group overflow-hidden"
-            >
-              <div className={`h-2 bg-gradient-to-r ${project.color}`} />
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="label">{project.eyebrow}</p>
-                    <h3 className="mt-3 text-2xl font-black tracking-tight">{project.title}</h3>
+      <Section
+        id="projects"
+        dark
+        eyebrow="Selected work"
+        index="03"
+        title="Case studies built around decisions, not decoration."
+        intro="Each project starts with the business question, shows my contribution, and ends with what the evidence suggests doing next."
+      >
+        <div className="featured-projects">
+          {projects.filter((project) => project.featured).map((project, index) => (
+            <Reveal key={project.slug} delay={index * 0.08}>
+              <motion.article
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.25 }}
+                className="featured-project"
+              >
+                <div className="project-number">0{index + 1}</div>
+                <div className="project-main">
+                  <p className="mini-label">{project.eyebrow}</p>
+                  <h3>{project.title}</h3>
+                  <p className="project-problem">{project.problem}</p>
+                  <div className="project-context">
+                    <span>{project.role}</span>
+                    <span>{project.scope}</span>
                   </div>
-                  <ArrowUpRight className="shrink-0 text-slate-400 transition group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-white" />
                 </div>
-                <p className="mt-4 leading-7 text-slate-300">{project.problem}</p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.tools.map((tool) => (
-                    <span key={tool} className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-black uppercase text-slate-200">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-                <ul className="mt-6 space-y-3">
-                  {project.insights.slice(0, 3).map((insight) => (
-                    <li key={insight} className="flex gap-3 text-sm leading-6 text-slate-300">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal-300" />
-                      {insight}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Link href={`/projects/${project.slug}`} className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-black text-slate-950 transition hover:-translate-y-1">
-                    Open Case Study
-                    <ArrowRight size={16} />
-                  </Link>
-                  <a href="https://github.com/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm font-black text-white transition hover:-translate-y-1 hover:bg-white/10">
-                    Repository
-                    <ExternalLink size={16} />
-                  </a>
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </Section>
-
-      <Section id="experience" eyebrow="Experience" title="Different contexts, one operating system: research, data, action.">
-        <div className="relative">
-          <div className="absolute left-4 top-0 h-full w-px bg-white/10" />
-          <div className="space-y-5">
-            {experiences.map((experience, index) => (
-              <motion.article key={experience.company} {...fadeUp} className="relative pl-12">
-                <span className="absolute left-0 top-2 grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-teal-300 to-fuchsia-400 text-sm font-black text-slate-950">
-                  {index + 1}
-                </span>
-                <div className="premium-card p-6">
-                  <p className="label">{experience.company}</p>
-                  <h3 className="mt-2 text-2xl font-black">{experience.role}</h3>
-                  <div className="mt-5 grid gap-3 md:grid-cols-3">
-                    {experience.points.map((point) => (
-                      <p key={point} className="rounded-lg border border-white/10 bg-white/[0.06] p-4 text-sm leading-6 text-slate-300">
-                        {point}
-                      </p>
-                    ))}
+                <div className="project-proof">
+                  <p className="mini-label">What changed</p>
+                  <p>{project.impact}</p>
+                  <div className="tool-row">
+                    {project.tools.map((tool) => <span key={tool}>{tool}</span>)}
+                  </div>
+                  <div className="project-actions">
+                    <Link href={`/projects/${project.slug}`}>
+                      Read case study <ArrowRight size={16} />
+                    </Link>
+                    {project.repository ? (
+                      <a href={project.repository} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
+                        <ExternalLink size={17} />
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </motion.article>
-            ))}
-          </div>
+            </Reveal>
+          ))}
         </div>
-      </Section>
 
-      <Section id="research" eyebrow="Research" title="Research credibility with measurable outcomes.">
-        <div className="grid gap-5 md:grid-cols-2">
-          {[
-            {
-              icon: Brain,
-              title: "Shor's Algorithm",
-              detail: "Springer publication with international conference recognition.",
-            },
-            {
-              icon: Gauge,
-              title: "Fake News Detection",
-              detail: "Applied ML system achieving ROC-AUC 0.9996.",
-            },
-          ].map(({ icon: Icon, title, detail }) => (
-            <motion.article key={title} {...fadeUp} className="premium-card p-6">
-              <Icon className="text-teal-200" size={28} />
-              <h3 className="mt-5 text-2xl font-black">{title}</h3>
-              <p className="mt-4 leading-7 text-slate-300">{detail}</p>
-            </motion.article>
+        <div className="project-grid">
+          {projects.filter((project) => !project.featured).map((project, index) => (
+            <Reveal key={project.slug} delay={index * 0.06}>
+              <motion.article whileHover={{ y: -6 }} className="project-card">
+                <div className="project-card-head">
+                  <span>{project.eyebrow}</span>
+                  <ArrowUpRight size={20} />
+                </div>
+                <h3>{project.title}</h3>
+                <p>{project.problem}</p>
+                <div className="tool-row">
+                  {project.tools.slice(0, 3).map((tool) => <span key={tool}>{tool}</span>)}
+                </div>
+                <Link href={`/projects/${project.slug}`}>View analysis <ArrowRight size={15} /></Link>
+              </motion.article>
+            </Reveal>
           ))}
         </div>
       </Section>
 
-      <Section id="education" eyebrow="Education" title="Academic foundation.">
-        <motion.div {...fadeUp} className="premium-card flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h3 className="text-3xl font-black">Manipal University Jaipur</h3>
-            <p className="mt-3 text-slate-300">B.Tech CSE, IoT & Intelligent Systems</p>
-          </div>
-          <span className="metric-font w-fit rounded-full bg-teal-300 px-5 py-3 font-black text-slate-950">
-            CGPA 6.81
-          </span>
-        </motion.div>
-      </Section>
-
-      <Section id="contact" eyebrow="Contact" title="Let’s turn messy data into a business answer.">
-        <div className="grid gap-6 lg:grid-cols-[.82fr_1.18fr]">
-          <motion.div {...fadeUp} className="premium-card p-6">
-            <h3 className="text-2xl font-black">Contact Signals</h3>
-            <div className="mt-6 space-y-3">
-              <ContactLink icon={<Mail size={18} />} label="Email" value="atharva2004.rajoba@gmail.com" href="mailto:atharva2004.rajoba@gmail.com" />
-              <ContactLink icon={<Phone size={18} />} label="Phone" value="+91 00000 00000" href="tel:+910000000000" />
-              <ContactLink icon={<Link2 size={18} />} label="LinkedIn" value="linkedin.com/in/atharvarajoba" href="https://www.linkedin.com/" />
-              <ContactLink icon={<AtSign size={18} />} label="GitHub" value="github.com/atharvarajoba" href="https://github.com/" />
-            </div>
-          </motion.div>
-
-          <motion.form {...fadeUp} className="premium-card p-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Name" placeholder="Recruiter name" />
-              <Field label="Email" placeholder="name@company.com" type="email" />
-            </div>
-            <div className="mt-4">
-              <Field label="Subject" placeholder="Data Analyst opportunity" />
-            </div>
-            <label className="mt-4 block">
-              <span className="text-sm font-bold text-slate-200">Message</span>
-              <textarea
-                suppressHydrationWarning
-                rows={5}
-                placeholder="Tell me about the role, team, and analytics problem."
-                className="mt-2 w-full resize-none rounded-lg border border-white/10 bg-white/[0.07] px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-teal-300/70"
-              />
-            </label>
-            <button
-              suppressHydrationWarning
-              type="button"
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black text-slate-950 transition hover:-translate-y-1"
-            >
-              <Send size={17} />
-              Send Message
-            </button>
-          </motion.form>
+      <Section
+        id="experience"
+        eyebrow="Experience"
+        index="04"
+        title="From product discovery to operational execution."
+        intro="Three internships, each adding a different layer to how I investigate problems and move work forward."
+      >
+        <div className="experience-list">
+          {experiences.map((experience, index) => (
+            <Reveal key={experience.company} delay={index * 0.07}>
+              <article className="experience-row">
+                <div className="experience-meta">
+                  <span>0{index + 1}</span>
+                  <p>{experience.period}</p>
+                </div>
+                <div className="experience-title">
+                  <p>{experience.company}</p>
+                  <h3>{experience.role}</h3>
+                  <span>{experience.summary}</span>
+                </div>
+                <ul>
+                  {experience.points.map((point) => (
+                    <li key={point}><CheckCircle2 size={16} />{point}</li>
+                  ))}
+                </ul>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </Section>
 
-      <footer className="section-shell border-t border-white/10 py-8 text-sm text-slate-500">
-        Built with Next.js, Tailwind CSS, Framer Motion, Recharts, and Lucide React.
+      <Section
+        id="capabilities"
+        tint
+        eyebrow="Capabilities"
+        index="05"
+        title="Tools in service of the question."
+        intro="The portfolio is intentionally organized by the work I can do, then by the technologies that support it."
+      >
+        <div className="capability-grid">
+          {skills.map((skill, index) => (
+            <Reveal key={skill.title} delay={index * 0.06}>
+              <motion.article whileHover={{ y: -5 }} className="capability-card">
+                <div className="capability-index">0{index + 1}</div>
+                <h3>{skill.title}</h3>
+                <p>{skill.summary}</p>
+                <div className="capability-tags">
+                  {skill.items.map((item) => <span key={item}>{item}</span>)}
+                </div>
+              </motion.article>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        id="credentials"
+        dark
+        eyebrow="Credibility"
+        index="06"
+        title="Research depth. Practical range."
+        intro="Academic work strengthened how I evaluate evidence; professional learning keeps the toolkit current."
+      >
+        <div className="credentials-layout">
+          <div className="research-stack">
+            {research.map((item, index) => (
+              <Reveal key={item.title} delay={index * 0.08}>
+                <article className="research-item">
+                  <div className="research-signal">{item.signal}</div>
+                  <div>
+                    <p className="mini-label">{item.venue}</p>
+                    <h3>{item.title}</h3>
+                    <p>{item.detail}</p>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal>
+            <aside className="education-panel">
+              <div className="education-mark"><FileText size={24} /></div>
+              <p className="mini-label">Education</p>
+              <h3>{education.institution}</h3>
+              <p>{education.degree}</p>
+              <p>{education.specialization}</p>
+              <div className="education-data">
+                <span>{education.period}</span>
+                <strong>CGPA {education.cgpa}</strong>
+              </div>
+              <div className="certification-list">
+                <p className="mini-label">Selected certifications</p>
+                {certifications.map((certification) => (
+                  <span key={certification}><CheckCircle2 size={15} />{certification}</span>
+                ))}
+              </div>
+            </aside>
+          </Reveal>
+        </div>
+      </Section>
+
+      <Section
+        id="contact"
+        eyebrow="Contact"
+        index="07"
+        title="Have a business problem worth unpacking?"
+        intro="I am open to Business Analyst, Product Analyst, and Data Analyst opportunities where thoughtful analysis leads to action."
+      >
+        <div className="contact-layout">
+          <Reveal>
+            <div className="contact-copy">
+              <div className="contact-status"><span />Available for conversations</div>
+              <h3>Let&apos;s make the next decision clearer.</h3>
+              <p>Share the role, team, or business problem. I will get back to you directly.</p>
+              <div className="contact-links">
+                <ContactLink icon={<Mail size={18} />} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
+                <ContactLink icon={<Phone size={18} />} label="Phone" value={contact.phoneDisplay} href={`tel:${contact.phoneHref}`} />
+                <ContactLink icon={<Link2 size={18} />} label="LinkedIn" value="atharva-rajoba" href={contact.linkedin} external />
+                <ContactLink icon={<AtSign size={18} />} label="GitHub" value="atharva1845" href={contact.github} external />
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <form className="contact-form" onSubmit={handleContact}>
+              <div className="form-grid">
+                <Field name="name" label="Name" placeholder="Your name" required />
+                <Field name="email" label="Email" placeholder="name@company.com" type="email" required />
+              </div>
+              <Field name="subject" label="Subject" placeholder="Business Analyst opportunity" required />
+              <label>
+                <span>Message</span>
+                <textarea name="message" rows={5} placeholder="Tell me about the role, team, or problem." required />
+              </label>
+              <button type="submit">Open email <Send size={17} /></button>
+            </form>
+          </Reveal>
+        </div>
+      </Section>
+
+      <footer>
+        <div className="section-shell footer-inner">
+          <div><strong>AR</strong><span>Atharva Rajoba</span></div>
+          <p>Business analysis first. Product and data fluency built in.</p>
+          <a href="#home">Back to top <ArrowUpRight size={15} /></a>
+        </div>
       </footer>
     </main>
   );
@@ -446,55 +463,33 @@ function Navbar({
   setMenuOpen: (value: boolean) => void;
 }) {
   return (
-    <header className="fixed inset-x-0 top-4 z-50">
-      <nav className="section-shell rounded-full border border-white/12 bg-slate-950/65 px-4 py-3 shadow-2xl shadow-black/20 backdrop-blur-xl">
-        <div className="flex items-center justify-between gap-4">
-          <a href="#home" className="flex items-center gap-3 font-black">
-            <span className="grid h-9 w-9 place-items-center rounded-lg bg-white text-sm text-slate-950">AR</span>
-            <span className="hidden sm:inline">Atharva Rajoba</span>
+    <header className="site-header">
+      <nav className="section-shell nav-shell" aria-label="Primary navigation">
+        <a className="brand-mark" href="#home" aria-label="Atharva Rajoba, home">
+          <span>AR</span>
+          <div><strong>Atharva Rajoba</strong><small>Analyst portfolio</small></div>
+        </a>
+
+        <div className="desktop-nav">
+          {navItems.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
+        </div>
+
+        <div className="nav-actions">
+          <a className="nav-resume" href="/Atharva-Analyst-Resume.pdf" download>
+            Resume <Download size={15} />
           </a>
-
-          <div className="hidden items-center gap-1 lg:flex">
-            {navItems.map(([label, id]) => (
-              <a key={id} href={`#${id}`} className="rounded-full px-4 py-2 text-sm font-bold text-slate-300 transition hover:bg-white/10 hover:text-white">
-                {label}
-              </a>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              suppressHydrationWarning
-              type="button"
-              aria-label="Toggle theme"
-              onClick={() => setDarkMode(!darkMode)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/10 text-white"
-            >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <button
-              suppressHydrationWarning
-              type="button"
-              aria-label="Toggle navigation"
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/10 text-white lg:hidden"
-            >
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
-          </div>
+          <button type="button" onClick={() => setDarkMode(!darkMode)} aria-label={darkMode ? "Use light theme" : "Use dark theme"}>
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button className="menu-button" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
+            {menuOpen ? <X size={19} /> : <Menu size={19} />}
+          </button>
         </div>
 
         {menuOpen ? (
-          <div className="mt-4 grid gap-1 border-t border-white/10 pt-3 lg:hidden">
+          <div className="mobile-nav">
             {navItems.map(([label, id]) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                onClick={() => setMenuOpen(false)}
-                className="rounded-lg px-4 py-3 text-sm font-bold text-slate-300"
-              >
-                {label}
-              </a>
+              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}<ArrowRight size={16} /></a>
             ))}
           </div>
         ) : null}
@@ -506,53 +501,67 @@ function Navbar({
 function Section({
   id,
   eyebrow,
+  index,
   title,
+  intro,
   children,
+  dark = false,
+  tint = false,
 }: {
   id: string;
   eyebrow: string;
+  index: string;
   title: string;
+  intro: string;
   children: ReactNode;
+  dark?: boolean;
+  tint?: boolean;
 }) {
   return (
-    <section id={id} className="scroll-mt-28 py-16 sm:py-24">
+    <section id={id} className={`content-section${dark ? " section-dark" : ""}${tint ? " section-tint" : ""}`}>
       <div className="section-shell">
-        <motion.div {...fadeUp} className="mb-10">
-          <p className="label">{eyebrow}</p>
-          <h2 className="mt-3 max-w-4xl text-balance text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            {title}
-          </h2>
-        </motion.div>
+        <Reveal>
+          <div className="section-heading">
+            <div className="section-label"><span>{index}</span>{eyebrow}</div>
+            <div>
+              <h2>{title}</h2>
+              <p>{intro}</p>
+            </div>
+          </div>
+        </Reveal>
         {children}
       </div>
     </section>
   );
 }
 
-function ButtonLink({
+function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+  return (
+    <motion.div
+      initial={false}
+      whileInView={{ opacity: [0.72, 1], y: [16, 0] }}
+      viewport={{ once: true, margin: "-70px" }}
+      transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function ActionLink({
   href,
   children,
   icon,
-  primary = false,
+  variant = "secondary",
+  download = false,
 }: {
   href: string;
   children: ReactNode;
   icon: ReactNode;
-  primary?: boolean;
+  variant?: "primary" | "secondary";
+  download?: boolean;
 }) {
-  return (
-    <a
-      href={href}
-      className={
-        primary
-          ? "inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black text-slate-950 transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-teal-500/20"
-          : "inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-3 text-sm font-black text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white/15"
-      }
-    >
-      {icon}
-      {children}
-    </a>
-  );
+  return <a href={href} download={download || undefined} className={`action-link action-${variant}`}>{children}{icon}</a>;
 }
 
 function ContactLink({
@@ -560,43 +569,40 @@ function ContactLink({
   label,
   value,
   href,
+  external = false,
 }: {
   icon: ReactNode;
   label: string;
   value: string;
   href: string;
+  external?: boolean;
 }) {
   return (
-    <a href={href} className="group flex items-center gap-4 rounded-lg border border-white/10 bg-white/[0.06] p-4 transition hover:-translate-y-1 hover:bg-white/[0.1]">
-      <span className="grid h-11 w-11 place-items-center rounded-lg bg-teal-300/15 text-teal-200">
-        {icon}
-      </span>
-      <span className="min-w-0">
-        <span className="block text-xs font-bold uppercase text-slate-500">{label}</span>
-        <span className="block truncate font-bold text-slate-200">{value}</span>
-      </span>
+    <a href={href} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
+      <span>{icon}</span>
+      <div><small>{label}</small><strong>{value}</strong></div>
+      {external ? <ExternalLink size={15} /> : <ArrowRight size={15} />}
     </a>
   );
 }
 
 function Field({
+  name,
   label,
   placeholder,
   type = "text",
+  required = false,
 }: {
+  name: string;
   label: string;
   placeholder: string;
   type?: string;
+  required?: boolean;
 }) {
   return (
-    <label className="block">
-      <span className="text-sm font-bold text-slate-200">{label}</span>
-      <input
-        suppressHydrationWarning
-        type={type}
-        placeholder={placeholder}
-        className="mt-2 w-full rounded-lg border border-white/10 bg-white/[0.07] px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-teal-300/70"
-      />
+    <label>
+      <span>{label}</span>
+      <input name={name} type={type} placeholder={placeholder} required={required} />
     </label>
   );
 }
