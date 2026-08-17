@@ -101,14 +101,6 @@ export default function Portfolio() {
       </header>
 
       <section className={styles.hero} id="home">
-        <Image
-          className={styles.heroImage}
-          src="/analyst-workspace-hero.png"
-          alt="Analytics workspace with research notes, process maps, and dashboards"
-          fill
-          priority
-          sizes="100vw"
-        />
         <div className={styles.heroWash} />
         <div className={styles.heroGrid} />
 
