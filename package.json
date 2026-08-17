@@ -1,5 +1,5 @@
 {
-  "name": "atharva-data-analyst-portfolio",
+  "name": "atharva-analyst-portfolio",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,8 +13,7 @@
     "lucide-react": "^1.14.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "recharts": "latest"
+    "react-dom": "latest"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "latest",

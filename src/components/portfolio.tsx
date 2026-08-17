@@ -432,9 +432,9 @@ export default function Portfolio() {
               <Field name="subject" label="Subject" placeholder="Business Analyst opportunity" required />
               <label>
                 <span>Message</span>
-                <textarea name="message" rows={5} placeholder="Tell me about the role, team, or problem." required />
+                <textarea suppressHydrationWarning name="message" rows={5} placeholder="Tell me about the role, team, or problem." required />
               </label>
-              <button type="submit">Open email <Send size={17} /></button>
+              <button suppressHydrationWarning type="submit">Open email <Send size={17} /></button>
             </form>
           </Reveal>
         </div>
@@ -478,10 +478,10 @@ function Navbar({
           <a className="nav-resume" href="/Atharva-Analyst-Resume.pdf" download>
             Resume <Download size={15} />
           </a>
-          <button type="button" onClick={() => setDarkMode(!darkMode)} aria-label={darkMode ? "Use light theme" : "Use dark theme"}>
+          <button suppressHydrationWarning type="button" onClick={() => setDarkMode(!darkMode)} aria-label={darkMode ? "Use light theme" : "Use dark theme"}>
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button className="menu-button" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
+          <button suppressHydrationWarning className="menu-button" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>
             {menuOpen ? <X size={19} /> : <Menu size={19} />}
           </button>
         </div>
@@ -602,7 +602,7 @@ function Field({
   return (
     <label>
       <span>{label}</span>
-      <input name={name} type={type} placeholder={placeholder} required={required} />
+      <input suppressHydrationWarning name={name} type={type} placeholder={placeholder} required={required} />
     </label>
   );
 }
