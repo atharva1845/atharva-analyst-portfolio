@@ -1111,11 +1111,31 @@ a {
 }
 
 .education-panel {
+  position: relative;
+  isolation: isolate;
   height: 100%;
+  overflow: hidden;
   padding: 32px;
   border: 1px solid #2d3a4b;
   border-radius: 8px;
   background: #172231;
+}
+
+.education-backdrop {
+  z-index: -2;
+  object-fit: cover;
+  object-position: 54% center;
+  filter: blur(2px);
+  transform: scale(1.025);
+}
+
+.education-overlay {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(9, 19, 32, 0.72) 0%, rgba(9, 19, 32, 0.84) 52%, rgba(9, 19, 32, 0.96) 100%),
+    linear-gradient(90deg, rgba(9, 19, 32, 0.78), rgba(9, 19, 32, 0.28));
 }
 
 .education-mark {
@@ -1125,7 +1145,9 @@ a {
   margin-bottom: 42px;
   place-items: center;
   border-radius: 6px;
-  background: #24364b;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(36, 54, 75, 0.76);
+  backdrop-filter: blur(8px);
   color: #74d8ce;
 }
 
