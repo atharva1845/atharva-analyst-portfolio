@@ -286,7 +286,7 @@ export default function Portfolio() {
             <Reveal key={project.slug} delay={index * 0.06}>
               <motion.article whileHover={{ y: -6 }} className="project-card">
                 <div className="project-card-head">
-                  <span>{project.eyebrow}</span>
+                  <span>0{index + 4} / {project.eyebrow}</span>
                   <ArrowUpRight size={20} />
                 </div>
                 <h3>{project.title}</h3>

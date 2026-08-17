@@ -79,6 +79,7 @@ export const skills = [
 
 export const projects = [
   {
+    order: 1,
     slug: "swiftvisa-ai-eligibility-platform",
     title: "SwiftVisa",
     eyebrow: "Product analysis + applied AI",
@@ -114,6 +115,7 @@ export const projects = [
     ],
   },
   {
+    order: 5,
     slug: "vendor-risk-procurement-analytics",
     title: "Vendor Risk & Procurement Analytics",
     eyebrow: "Business intelligence",
@@ -125,7 +127,7 @@ export const projects = [
     color: "from-blue-300 via-indigo-400 to-violet-500",
     impact: "Converted supplier records into a decision view for vendor comparison, risk prioritization, and procurement planning.",
     repository: null,
-    featured: true,
+    featured: false,
     insights: [
       "Segmented vendors by delivery reliability, spend exposure, and issue frequency.",
       "Highlighted suppliers where business dependence and operational risk overlapped.",
@@ -149,6 +151,7 @@ export const projects = [
     ],
   },
   {
+    order: 6,
     slug: "ola-ride-analytics",
     title: "OLA Ride Analytics",
     eyebrow: "Operations analytics",
@@ -160,7 +163,7 @@ export const projects = [
     color: "from-emerald-300 via-teal-400 to-cyan-500",
     impact: "Built a multi-page operations dashboard that makes booking and cancellation patterns easier to investigate.",
     repository: "https://github.com/atharva1845/ola-dashboard-powerbi",
-    featured: true,
+    featured: false,
     insights: [
       "Compared booking value and demand patterns across vehicle types and time periods.",
       "Separated customer and driver cancellation reasons to reveal different intervention paths.",
@@ -184,6 +187,7 @@ export const projects = [
     ],
   },
   {
+    order: 2,
     slug: "bank-customer-churn-analysis",
     title: "Bank Customer Churn Analysis",
     eyebrow: "Customer retention",
@@ -195,7 +199,7 @@ export const projects = [
     color: "from-amber-300 via-orange-400 to-rose-500",
     impact: "Translated churn patterns into customer segments and practical retention priorities.",
     repository: null,
-    featured: false,
+    featured: true,
     insights: [
       "Balance, tenure, age, activity, and product usage emerged as useful churn signals.",
       "Grouped customers by behavior and value to avoid one-size-fits-all retention actions.",
@@ -219,6 +223,7 @@ export const projects = [
     ],
   },
   {
+    order: 3,
     slug: "olist-ecommerce-analysis",
     title: "Olist E-commerce Analysis",
     eyebrow: "Marketplace performance",
@@ -230,7 +235,7 @@ export const projects = [
     color: "from-violet-300 via-fuchsia-400 to-rose-500",
     impact: "Connected fragmented marketplace tables into a performance story spanning growth and fulfillment.",
     repository: null,
-    featured: false,
+    featured: true,
     insights: [
       "Revenue and order trends exposed seasonal and category-level movement.",
       "Delivery delays revealed friction between approval, shipping, and customer receipt.",
@@ -254,6 +259,7 @@ export const projects = [
     ],
   },
   {
+    order: 4,
     slug: "marketing-campaign-analysis",
     title: "Marketing Campaign Analysis",
     eyebrow: "Growth analytics",
@@ -288,7 +294,7 @@ export const projects = [
       "Monitor monthly efficiency to distinguish trends from short-term spikes.",
     ],
   },
-];
+].sort((first, second) => first.order - second.order);
 
 export const experiences = [
   {
