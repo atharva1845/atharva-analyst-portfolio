@@ -177,10 +177,13 @@ export default function Portfolio() {
           <Reveal>
             <div className={styles.aboutStatement}>
               <p>
-                I use SQL, Python, Power BI, market research, and structured problem-solving to turn fragmented information into practical next steps. My work spans customer retention, marketplace performance, procurement risk, product validation, and AI-enabled workflows.
+                I approach every assignment by first understanding the business objective, the stakeholders involved, and the decision that needs to be made. I combine requirement gathering, market and competitor research, process mapping, and stakeholder communication with SQL, Python, Power BI, and Excel to convert fragmented information into clear recommendations.
               </p>
               <p>
-                A published researcher with international conference recognition, I bring the same evidence-first discipline to business and product decisions.
+                My work spans customer retention, marketplace performance, procurement risk, product validation, pricing, and AI-enabled workflows. I focus on identifying revenue opportunities, operational bottlenecks, customer pain points, and measurable improvements that teams can prioritize and execute.
+              </p>
+              <p>
+                Across product, machine learning, and business operations internships, I have supported workflow documentation, market analysis, outreach, conversion, and data-driven reporting. As a published researcher with international conference recognition, I bring disciplined evaluation and evidence-first thinking to business and product decisions.
               </p>
               <a href="#experience">See experience <ArrowRight size={16} /></a>
             </div>
