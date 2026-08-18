@@ -1,6 +1,6 @@
 # Atharva Rajoba Analyst Portfolio
 
-Recruiter-focused portfolio positioning Atharva Rajoba as a Business Analyst with Product and Data Analyst capabilities. The site presents verified experience, decision-led case studies, research, education, certifications, and direct contact details.
+Recruiter-focused portfolio positioning Atharva Rajoba as a Business Analyst with Product and Data Analyst capabilities. The site presents verified experience, decision-led case studies, research, education, and direct contact details.
 
 ## Stack
 
@@ -14,7 +14,6 @@ Recruiter-focused portfolio positioning Atharva Rajoba as a Business Analyst wit
 
 ```text
 .
-|-- marketing_campaign_analysis/   Reproducible analytics project
 |-- public/                         Resume and optimized visual assets
 |-- src/
 |   |-- app/
@@ -44,8 +43,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 npm run lint
+npm run typecheck
 npm run build
 ```
+
+Run all release checks together with `npm run check`.
 
 ## Deploy to Vercel
 

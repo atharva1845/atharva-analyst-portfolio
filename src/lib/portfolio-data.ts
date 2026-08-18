@@ -20,19 +20,16 @@ export const profilePillars = [
     title: "Business Analyst",
     focus: "Requirements, process mapping, research, and decision support.",
     evidence: "Workflow documentation, competitor analysis, pricing, and stakeholder coordination.",
-    accent: "teal",
   },
   {
     title: "Product Analyst",
     focus: "User problems, product workflows, validation, and measurable outcomes.",
     evidence: "SwiftVisa product flows, AI automation design, testing, and issue analysis.",
-    accent: "blue",
   },
   {
     title: "Data Analyst",
     focus: "SQL, Python, Excel, Power BI, and analytical storytelling.",
     evidence: "Customer, procurement, mobility, marketing, and marketplace analytics.",
-    accent: "amber",
   },
 ];
 
@@ -40,7 +37,6 @@ export const skills = [
   {
     title: "Business Analysis",
     summary: "Define the problem before choosing the tool.",
-    accent: "from-teal-400 to-emerald-400",
     items: [
       "Requirement Gathering",
       "Process Mapping",
@@ -53,7 +49,6 @@ export const skills = [
   {
     title: "Product & Operations",
     summary: "Connect user needs with workflows and execution.",
-    accent: "from-blue-400 to-cyan-400",
     items: [
       "Product Discovery",
       "Workflow Design",
@@ -66,13 +61,11 @@ export const skills = [
   {
     title: "Data & BI",
     summary: "Turn raw records into reliable decision views.",
-    accent: "from-amber-300 to-orange-400",
     items: ["SQL", "Excel", "Power BI", "Python", "Pandas", "NumPy", "DAX"],
   },
   {
     title: "Applied AI",
     summary: "Use machine learning and AI tools to research, build, and improve decisions.",
-    accent: "from-rose-400 to-fuchsia-400",
     items: [
       "Scikit-learn",
       "TensorFlow",
@@ -100,10 +93,8 @@ export const projects = [
     scope: "Eligibility workflow, retrieval logic, validation, and product documentation",
     stakeholders: ["Applicants", "Product team", "Reviewers"],
     tools: ["Python", "RAG", "LLMs", "Streamlit"],
-    color: "from-teal-300 via-cyan-400 to-blue-500",
     impact: "Structured a complex policy journey into a testable eligibility experience with evidence-aware responses.",
     repository: "https://github.com/atharva1845/ai_swift_visa_screening_test",
-    featured: true,
     insights: [
       "Mapped applicant inputs to an understandable eligibility workflow instead of exposing model complexity.",
       "Used semantic retrieval to ground responses in relevant visa criteria and reduce unsupported answers.",
@@ -136,10 +127,8 @@ export const projects = [
     scope: "3,000+ procurement records across supplier, spend, delivery, and risk dimensions",
     stakeholders: ["Procurement", "Operations", "Finance"],
     tools: ["SQL Server", "Power BI", "DAX", "Excel"],
-    color: "from-blue-300 via-indigo-400 to-violet-500",
     impact: "Converted supplier records into a decision view for vendor comparison, risk prioritization, and procurement planning.",
     repository: null,
-    featured: false,
     insights: [
       "Segmented vendors by delivery reliability, spend exposure, and issue frequency.",
       "Highlighted suppliers where business dependence and operational risk overlapped.",
@@ -172,10 +161,8 @@ export const projects = [
     scope: "100K+ ride bookings across operations, customer, vehicle, and payment dimensions",
     stakeholders: ["Operations", "Customer experience", "Business leadership"],
     tools: ["SQL", "Power BI", "Excel", "DAX"],
-    color: "from-emerald-300 via-teal-400 to-cyan-500",
     impact: "Built a multi-page operations dashboard that makes booking and cancellation patterns easier to investigate.",
     repository: "https://github.com/atharva1845/ola-dashboard-powerbi",
-    featured: false,
     insights: [
       "Compared booking value and demand patterns across vehicle types and time periods.",
       "Separated customer and driver cancellation reasons to reveal different intervention paths.",
@@ -208,10 +195,8 @@ export const projects = [
     scope: "10,000+ customer records across demographic, account, product, and activity attributes",
     stakeholders: ["Customer success", "Marketing", "Business leadership"],
     tools: ["Python", "SQL", "Excel", "Power BI"],
-    color: "from-amber-300 via-orange-400 to-rose-500",
     impact: "Translated churn patterns into customer segments and practical retention priorities.",
     repository: "https://github.com/atharva1845/bank-customer-churn-analysis",
-    featured: true,
     insights: [
       "Balance, tenure, age, activity, and product usage emerged as useful churn signals.",
       "Grouped customers by behavior and value to avoid one-size-fits-all retention actions.",
@@ -244,10 +229,8 @@ export const projects = [
     scope: "100K+ orders connected across customers, sellers, products, payments, and logistics",
     stakeholders: ["Marketplace operations", "Category teams", "Leadership"],
     tools: ["SQL", "Power BI", "Python"],
-    color: "from-violet-300 via-fuchsia-400 to-rose-500",
     impact: "Connected fragmented marketplace tables into a performance story spanning growth and fulfillment.",
     repository: "https://github.com/atharva1845/olist-ecommerce-sql-analysis",
-    featured: true,
     insights: [
       "Revenue and order trends exposed seasonal and category-level movement.",
       "Delivery delays revealed friction between approval, shipping, and customer receipt.",
@@ -280,10 +263,8 @@ export const projects = [
     scope: "45K+ customer interactions across channel, spend, conversion, and audience dimensions",
     stakeholders: ["Marketing", "Growth", "Business leadership"],
     tools: ["Python", "SQL", "Excel", "Power BI"],
-    color: "from-rose-300 via-pink-400 to-fuchsia-500",
     impact: "Created a reproducible analysis workflow and dashboard for channel, segment, and ROI comparison.",
-    repository: "https://github.com/atharva1845/atharva-analyst-portfolio/tree/main/marketing_campaign_analysis",
-    featured: false,
+    repository: "https://github.com/atharva1845/bank-marketing-campaign-analysis",
     insights: [
       "Compared conversion and ROI patterns across channels and customer segments.",
       "Separated efficient growth from high-spend, low-response activity.",
@@ -378,8 +359,6 @@ export const research = [
 
 export const achievement = {
   title: "Certificate of Excellence in Research",
-  issuer: "Manipal University Jaipur",
-  period: "2025",
   detail: "Awarded for outstanding research performance in the Department of IoT & Intelligent Systems, recognizing the publication of two Springer research papers.",
   image: "/achievements/research-excellence-certificate.png",
   imageAlt: "Manipal University Jaipur Certificate of Excellence awarded to Atharva Rajoba for outstanding research performance in 2025",
@@ -393,13 +372,6 @@ export const education = {
   period: "2022 - 2026",
   cgpa: "6.96",
 };
-
-export const certifications = [
-  "Google Data Analytics Professional Certificate",
-  "IBM Data Analysis and Visualization Foundations",
-  "IBM Introduction to Machine Learning",
-  "Operations Management",
-];
 
 export const contact = {
   email: "atharva2004.rajoba@gmail.com",
