@@ -71,9 +71,21 @@ export const skills = [
   },
   {
     title: "Applied AI",
-    summary: "Use machine learning where it improves the decision.",
+    summary: "Use machine learning and AI tools to research, build, and improve decisions.",
     accent: "from-rose-400 to-fuchsia-400",
-    items: ["Scikit-learn", "TensorFlow", "RAG Systems", "LLMs", "Semantic Retrieval"],
+    items: [
+      "Scikit-learn",
+      "TensorFlow",
+      "RAG Systems",
+      "LLMs",
+      "Semantic Retrieval",
+      "ChatGPT",
+      "Codex",
+      "Claude",
+      "Claude Code",
+      "Cursor",
+      "AntiGravity",
+    ],
   },
 ];
 
