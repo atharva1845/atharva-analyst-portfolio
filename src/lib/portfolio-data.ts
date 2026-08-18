@@ -368,7 +368,7 @@ export const research = [
     title: "A Lightweight Hybrid Term Frequency-Inverse Document Frequency Ensemble of Logistic Regression and Naive Bayes for Fake News Detection",
     venue: "Springer Nature | Lecture Notes in Networks and Systems | 2026 | pp. 331-341",
     detail: "An interpretable hybrid TF-IDF, Logistic Regression, and Naive Bayes framework evaluated on approximately 44,000 news articles, achieving 99.19% accuracy.",
-    signal: "ROC-AUC 0.9996",
+    signal: "Fake News Detection",
     doi: "10.1007/978-3-032-25187-9_32",
     doiUrl: "https://doi.org/10.1007/978-3-032-25187-9_32",
     pdf: "/research-papers/fake-news-detection.pdf",
