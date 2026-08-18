@@ -7,6 +7,8 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
@@ -20,8 +22,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${project.title} | Atharva Rajoba`,
+    title: project.title,
     description: project.problem,
+    alternates: {
+      canonical: `/projects/${project.slug}`,
+    },
+    openGraph: {
+      title: `${project.title} | Atharva Rajoba`,
+      description: project.problem,
+      type: "article",
+      url: `/projects/${project.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Atharva Rajoba`,
+      description: project.problem,
+    },
   };
 }
 

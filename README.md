@@ -20,6 +20,8 @@ Recruiter-focused portfolio positioning Atharva Rajoba as a Business Analyst wit
 |   |   |-- projects/[slug]/        Static case-study routes
 |   |   |-- globals.css             Visual system and responsive styles
 |   |   |-- layout.tsx              SEO metadata and root layout
+|   |   |-- sitemap.ts              Search-engine route index
+|   |   |-- robots.ts               Crawler policy
 |   |   `-- page.tsx                Portfolio entry page
 |   |-- components/
 |   |   |-- portfolio.tsx           Main interactive portfolio
@@ -49,6 +51,14 @@ npm run build
 
 Run all release checks together with `npm run check`.
 
+## Site URL
+
+The production URL is detected automatically on Vercel. When a custom domain is connected, set this environment variable in Vercel for canonical links, the sitemap, and social metadata:
+
+```text
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+
 ## Deploy to Vercel
 
 1. Push the latest `main` branch to GitHub.
@@ -57,3 +67,5 @@ Run all release checks together with `npm run check`.
 4. Keep the detected Next.js defaults and select **Deploy**.
 
 Vercel installs dependencies, builds the App Router project, and publishes future pushes to `main` automatically.
+
+Use a feature branch for changes that need review. Vercel creates a Preview deployment for branch pushes and pull requests; merge the verified branch into `main` to update production.

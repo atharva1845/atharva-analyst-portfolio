@@ -292,8 +292,7 @@ export const projects = [
 export const experiences = [
   {
     company: "SwitchiT",
-    logo: "/company-logos/switchit.png",
-    logoAlt: "SwitchiT logo",
+    logo: "/company-logos/switchit.webp",
     logoPresentation: "icon",
     role: "Product Management Intern",
     period: "Jan 2026 - Present",
@@ -306,8 +305,7 @@ export const experiences = [
   },
   {
     company: "Infosys Springboard",
-    logo: "/company-logos/infosys-springboard.png",
-    logoAlt: "Infosys Springboard logo",
+    logo: "/company-logos/infosys-springboard.webp",
     logoPresentation: "wordmark",
     role: "Machine Learning Intern",
     period: "Oct 2025 - Dec 2025",
@@ -320,8 +318,7 @@ export const experiences = [
   },
   {
     company: "Shark Exports",
-    logo: "/company-logos/shark-exports.png",
-    logoAlt: "Shark Exports logo",
+    logo: "/company-logos/shark-exports.webp",
     logoPresentation: "wordmark",
     role: "Business Development & Operations Intern",
     period: "May 2025 - Aug 2025",
@@ -343,7 +340,7 @@ export const research = [
     doi: "10.1007/978-3-032-12983-3_3",
     doiUrl: "https://doi.org/10.1007/978-3-032-12983-3_3",
     pdf: "/research-papers/shors-algorithm.pdf",
-    preview: "/research-papers/shors-algorithm-preview.png",
+    preview: "/research-papers/shors-algorithm-preview.webp",
   },
   {
     title: "A Lightweight Hybrid Term Frequency-Inverse Document Frequency Ensemble of Logistic Regression and Naive Bayes for Fake News Detection",
@@ -353,15 +350,14 @@ export const research = [
     doi: "10.1007/978-3-032-25187-9_32",
     doiUrl: "https://doi.org/10.1007/978-3-032-25187-9_32",
     pdf: "/research-papers/fake-news-detection.pdf",
-    preview: "/research-papers/fake-news-detection-preview.png",
+    preview: "/research-papers/fake-news-detection-preview.webp",
   },
 ];
 
 export const achievement = {
   title: "Certificate of Excellence in Research",
   detail: "Awarded for outstanding research performance in the Department of IoT & Intelligent Systems, recognizing the publication of two Springer research papers.",
-  image: "/achievements/research-excellence-certificate.png",
-  imageAlt: "Manipal University Jaipur Certificate of Excellence awarded to Atharva Rajoba for outstanding research performance in 2025",
+  image: "/achievements/research-excellence-certificate.webp",
   signals: ["2 Springer publications", "Research excellence", "IoT & IS"],
 };
 

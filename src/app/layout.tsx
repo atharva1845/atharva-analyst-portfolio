@@ -1,11 +1,22 @@
 import type { Metadata } from "next";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
+const title = "Atharva Rajoba | Business, Product & Data Analyst";
+const description =
+  "Portfolio of Atharva Rajoba, a Business Analyst with Product and Data Analytics experience across requirements, process improvement, SQL, Power BI, and applied AI.";
+
 export const metadata: Metadata = {
-  title: "Atharva Rajoba | Business, Product & Data Analyst",
-  description:
-    "Portfolio of Atharva Rajoba, a Business Analyst with Product and Data Analytics experience across requirements, process improvement, SQL, Power BI, and applied AI.",
+  metadataBase: getSiteUrl(),
+  title: {
+    default: title,
+    template: "%s | Atharva Rajoba",
+  },
+  description,
   authors: [{ name: "Atharva Rajoba" }],
+  creator: "Atharva Rajoba",
+  publisher: "Atharva Rajoba",
+  category: "Portfolio",
   keywords: [
     "Atharva Rajoba",
     "Business Analyst",
@@ -20,10 +31,20 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
   openGraph: {
-    title: "Atharva Rajoba | Business, Product & Data Analyst",
+    title,
     description: "Turning business questions into clear, evidence-backed decisions.",
     type: "website",
     locale: "en_US",
+    url: "/",
+    siteName: "Atharva Rajoba Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  alternates: {
+    canonical: "/",
   },
   robots: {
     index: true,

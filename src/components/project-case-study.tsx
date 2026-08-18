@@ -1,7 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
+import type { CSSProperties, ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -37,55 +35,40 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
       <section className="case-hero">
         <div className="case-grid" />
         <div className="section-shell case-hero-inner">
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: [0.72, 1], y: [18, 0] }}
-            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="case-hero-copy">
             <p className="case-eyebrow">Case study <span>/</span> {project.eyebrow}</p>
             <h1>{project.title}</h1>
             <p className="case-problem">{project.problem}</p>
             <div className="case-tools">
               {project.tools.map((tool) => <span key={tool}>{tool}</span>)}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.aside
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: [0.72, 1], y: [18, 0] }}
-            transition={{ duration: 0.75, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="case-brief"
-          >
+          <aside className="case-brief case-hero-brief">
             <CaseBriefItem icon={<Target size={18} />} label="My role" value={project.role} />
             <CaseBriefItem icon={<Database size={18} />} label="Scope" value={project.scope} />
             <CaseBriefItem icon={<Users size={18} />} label="Stakeholders" value={project.stakeholders.join(", ")} />
-          </motion.aside>
+          </aside>
         </div>
       </section>
 
-      <section className="case-metrics">
+      <div className="case-metrics">
         <div className="section-shell">
           {project.metrics.map(([label, value]) => (
             <div key={label}><span>{label}</span><strong>{value}</strong></div>
           ))}
           <div className="case-impact"><span>Outcome</span><p>{project.impact}</p></div>
         </div>
-      </section>
+      </div>
 
-      <section className="case-body">
+      <div className="case-body">
         <div className="section-shell">
           <CaseSection index="01" label="Context and approach" title="From the business question to an analytical path.">
             <div className="case-narrative">
               {project.story.map((line, index) => (
-                <motion.p
-                  key={line}
-                  initial={false}
-                  whileInView={{ opacity: [0.72, 1], y: [14, 0] }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.55, delay: index * 0.07 }}
-                >
+                <p key={line} style={{ "--story-index": index } as CSSProperties}>
                   <span>0{index + 1}</span>{line}
-                </motion.p>
+                </p>
               ))}
             </div>
           </CaseSection>
@@ -117,15 +100,15 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
           <CaseSection index="05" label="Recommendations" title="What I would do next.">
             <div className="recommendation-grid">
               {project.recommendations.map((recommendation, index) => (
-                <motion.div key={recommendation} whileHover={{ y: -4 }}>
+                <div key={recommendation}>
                   <span>0{index + 1}</span>
                   <p>{recommendation}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </CaseSection>
         </div>
-      </section>
+      </div>
 
       <section className="next-case">
         <div className="section-shell">
@@ -141,7 +124,7 @@ export function ProjectCaseStudy({ project }: { project: Project }) {
   );
 }
 
-function CaseBriefItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function CaseBriefItem({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return <div><span>{icon}</span><p><small>{label}</small><strong>{value}</strong></p></div>;
 }
 
@@ -155,7 +138,7 @@ function CaseSection({
   index: string;
   label: string;
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   compact?: boolean;
 }) {
   return (
@@ -166,6 +149,6 @@ function CaseSection({
   );
 }
 
-function DecisionStep({ icon, title, copy }: { icon: React.ReactNode; title: string; copy: string }) {
-  return <motion.article whileHover={{ y: -5 }}><div>{icon}</div><span>{title}</span><p>{copy}</p></motion.article>;
+function DecisionStep({ icon, title, copy }: { icon: ReactNode; title: string; copy: string }) {
+  return <article><div>{icon}</div><span>{title}</span><p>{copy}</p></article>;
 }

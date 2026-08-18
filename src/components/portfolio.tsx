@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { type ReactNode, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
 import {
   ArrowRight,
@@ -45,60 +45,14 @@ const navItems = [
 const projectAccents = ["mint", "blue", "coral", "yellow", "violet", "sky"];
 
 export default function Portfolio() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [roleIndex, setRoleIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setRoleIndex((current) => (current + 1) % roles.length);
-    }, 2400);
-
-    return () => window.clearInterval(timer);
-  }, []);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <main className={styles.site}>
-      <header className={styles.header}>
-        <div className={styles.navShell}>
-          <a className={styles.brand} href="#home" aria-label="Atharva Rajoba home">
-            <span>AR</span>
-            <strong>Atharva Rajoba</strong>
-          </a>
+    <div className={styles.site}>
+      <a className={styles.skipLink} href="#main-content">Skip to content</a>
+      <SiteHeader />
 
-          <nav className={styles.desktopNav} aria-label="Primary navigation">
-            {navItems.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
-          </nav>
-
-          <a className={styles.navResume} href="/Atharva-Analyst-Resume.pdf" download>
-            Resume <Download size={15} />
-          </a>
-
-          <button
-            className={styles.menuButton}
-            type="button"
-            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={21} /> : <Menu size={21} />}
-          </button>
-        </div>
-
-        {menuOpen ? (
-          <motion.nav
-            className={styles.mobileNav}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            aria-label="Mobile navigation"
-          >
-            {navItems.map(([label, id]) => (
-              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
-                {label}<ArrowUpRight size={15} />
-              </a>
-            ))}
-          </motion.nav>
-        ) : null}
-      </header>
+      <main id="main-content">
 
       <section className={styles.hero} id="home">
         <div className={styles.heroWash} />
@@ -107,23 +61,14 @@ export default function Portfolio() {
         <div className={styles.heroInner}>
           <motion.div
             className={styles.heroCopy}
-            initial={{ opacity: 0, y: 30 }}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <div className={styles.availability}><span />{siteMeta.availability}</div>
+            <div className={styles.availability}><span aria-hidden="true" />{siteMeta.availability}</div>
             <p className={styles.heroEyebrow}>Business clarity, powered by evidence</p>
             <h1>Atharva<br />Rajoba.</h1>
-            <div className={styles.roleLine}>
-              <span>I work as a</span>
-              <motion.strong
-                key={roles[roleIndex]}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                {roles[roleIndex]}
-              </motion.strong>
-            </div>
+            <RotatingRole />
             <p className={styles.heroSummary}>
               I translate business questions, user needs, and raw data into clear decisions teams can act on.
             </p>
@@ -138,7 +83,7 @@ export default function Portfolio() {
 
           <motion.div
             className={styles.heroNote}
-            initial={{ opacity: 0, x: 24 }}
+            initial={shouldReduceMotion ? false : { opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.35, duration: 0.6 }}
           >
@@ -216,7 +161,7 @@ export default function Portfolio() {
         <div className={styles.skillsGrid}>
           {skills.map((skill, index) => (
             <Reveal key={skill.title} delay={index * 0.06}>
-              <motion.article className={styles.skillCard} whileHover={{ y: -6 }}>
+              <motion.article className={styles.skillCard} whileHover={shouldReduceMotion ? undefined : { y: -6 }}>
                 <div className={`${styles.skillIcon} ${styles[`accent${index + 1}`]}`}>
                   {index === 0 ? <BriefcaseBusiness size={22} /> : index === 1 ? <ArrowUpRight size={22} /> : index === 2 ? <FileText size={22} /> : <Link2 size={22} />}
                 </div>
@@ -241,7 +186,7 @@ export default function Portfolio() {
         <div className={styles.projectsGrid}>
           {projects.map((project, index) => (
             <Reveal key={project.slug} delay={(index % 3) * 0.06}>
-              <motion.article className={`${styles.projectCard} ${styles[projectAccents[index]]}`} whileHover={{ y: -7 }}>
+              <motion.article className={`${styles.projectCard} ${styles[projectAccents[index]]}`} whileHover={shouldReduceMotion ? undefined : { y: -7 }}>
                 <div className={styles.projectTopline}>
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <small>{project.eyebrow}</small>
@@ -284,7 +229,7 @@ export default function Portfolio() {
                   <div className={styles.timelineContent}>
                     <div className={styles.companyLine}>
                       <span className={`${styles.companyLogo} ${experience.logoPresentation === "icon" ? styles.companyLogoIcon : ""}`}>
-                        <Image src={experience.logo} alt={experience.logoAlt} width={150} height={80} sizes="110px" />
+                        <Image src={experience.logo} alt="" width={150} height={80} sizes="110px" />
                       </span>
                       <div>
                         <small>{experience.company}</small>
@@ -305,7 +250,7 @@ export default function Portfolio() {
           <Reveal delay={0.08}>
             <aside className={styles.educationCard}>
               <div className={styles.campusVisual}>
-                <Image src="/education/manipal-university-jaipur.png" alt="Manipal University Jaipur campus" fill sizes="(max-width: 900px) 100vw, 420px" />
+                <Image src="/education/manipal-university-jaipur.webp" alt="Manipal University Jaipur campus" fill sizes="(max-width: 900px) 100vw, 420px" />
                 <div />
                 <strong>{education.institution}</strong>
               </div>
@@ -323,7 +268,7 @@ export default function Portfolio() {
           <Reveal>
             <a className={styles.achievementFeature} href={achievement.image} target="_blank" rel="noreferrer">
               <div className={styles.achievementImage}>
-                <Image src={achievement.image} alt={achievement.imageAlt} width={1308} height={1179} sizes="(max-width: 780px) calc(100vw - 72px), 390px" />
+                <Image src={achievement.image} alt="" width={1308} height={1179} sizes="(max-width: 780px) calc(100vw - 72px), 390px" />
               </div>
               <div className={styles.achievementCopy}>
                 <small>2025 recognition</small>
@@ -381,6 +326,8 @@ export default function Portfolio() {
         </div>
       </section>
 
+      </main>
+
       <footer className={styles.footer}>
         <div className={styles.footerInner}>
           <a className={styles.brand} href="#home"><span>AR</span><strong>Atharva Rajoba</strong></a>
@@ -388,7 +335,99 @@ export default function Portfolio() {
           <a href={`mailto:${contact.email}`}>{contact.email}</a>
         </div>
       </footer>
-    </main>
+    </div>
+  );
+}
+
+function SiteHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [menuOpen]);
+
+  return (
+    <header className={styles.header}>
+      <div className={styles.navShell}>
+        <a className={styles.brand} href="#home" aria-label="Atharva Rajoba home">
+          <span>AR</span>
+          <strong>Atharva Rajoba</strong>
+        </a>
+
+        <nav className={styles.desktopNav} aria-label="Primary navigation">
+          {navItems.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
+        </nav>
+
+        <a className={styles.navResume} href="/Atharva-Analyst-Resume.pdf" download>
+          Resume <Download size={15} aria-hidden="true" />
+        </a>
+
+        <button
+          className={styles.menuButton}
+          type="button"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+          aria-controls="mobile-navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X size={21} aria-hidden="true" /> : <Menu size={21} aria-hidden="true" />}
+        </button>
+      </div>
+
+      {menuOpen ? (
+        <motion.nav
+          id="mobile-navigation"
+          className={styles.mobileNav}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          aria-label="Mobile navigation"
+        >
+          {navItems.map(([label, id]) => (
+            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
+              {label}<ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+          ))}
+        </motion.nav>
+      ) : null}
+    </header>
+  );
+}
+
+function RotatingRole() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const timer = window.setInterval(() => {
+      setRoleIndex((current) => (current + 1) % roles.length);
+    }, 2400);
+
+    return () => window.clearInterval(timer);
+  }, [shouldReduceMotion]);
+
+  return (
+    <div className={styles.roleLine}>
+      <span aria-hidden="true">I work as a</span>
+      <motion.strong
+        aria-hidden="true"
+        key={roles[roleIndex]}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        {roles[roleIndex]}
+      </motion.strong>
+      <span className={styles.srOnly}>Business Analyst, Product Analyst, and Data Analyst</span>
+    </div>
   );
 }
 
@@ -426,12 +465,14 @@ function Section({
 }
 
 function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.55, delay, ease: "easeOut" }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.55, delay: shouldReduceMotion ? 0 : delay, ease: "easeOut" }}
     >
       {children}
     </motion.div>

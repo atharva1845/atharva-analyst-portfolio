@@ -154,6 +154,31 @@ button:focus-visible {
   padding-block: 132px 80px;
 }
 
+.case-hero-inner > * {
+  min-width: 0;
+}
+
+.case-hero-copy,
+.case-hero-brief {
+  animation: case-enter 750ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.case-hero-brief {
+  animation-delay: 80ms;
+}
+
+@keyframes case-enter {
+  from {
+    opacity: 0.72;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .case-eyebrow {
   margin: 0;
   color: #74d8ce;
@@ -357,6 +382,8 @@ button:focus-visible {
   color: #475467;
   font-size: 0.88rem;
   line-height: 1.72;
+  animation: case-enter 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--story-index, 0) * 70ms);
 }
 
 .case-narrative p span {
@@ -382,6 +409,12 @@ button:focus-visible {
   min-height: 290px;
   padding: 30px;
   border-right: 1px solid #2d3a4b;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.decision-trail article:hover {
+  background: #162334;
+  transform: translateY(-5px);
 }
 
 .decision-trail article:last-child {
@@ -504,6 +537,12 @@ button:focus-visible {
   padding: 26px;
   border-radius: 8px;
   background: #d9f0ed;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.recommendation-grid > div:hover {
+  box-shadow: 0 12px 28px rgba(16, 24, 40, 0.1);
+  transform: translateY(-4px);
 }
 
 .recommendation-grid > div:nth-child(2) {
@@ -634,4 +673,26 @@ button:focus-visible {
   .recommendation-grid p { margin-top: 45px; }
   .next-case .section-shell { min-height: 270px; flex-direction: column; align-items: flex-start; justify-content: center; }
   .next-case h2 { font-size: 2.1rem; }
+}
+
+@media (max-width: 400px) {
+  .case-hero h1 {
+    font-size: 2.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
