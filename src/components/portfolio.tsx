@@ -307,7 +307,6 @@ export default function Portfolio() {
               <div className={styles.campusVisual}>
                 <Image src="/education/manipal-university-jaipur.png" alt="Manipal University Jaipur campus" fill sizes="(max-width: 900px) 100vw, 420px" />
                 <div />
-                <span><FileText size={20} /></span>
                 <strong>{education.institution}</strong>
               </div>
               <div className={styles.educationBody}>
