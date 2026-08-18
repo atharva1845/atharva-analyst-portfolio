@@ -198,7 +198,7 @@ export const projects = [
     tools: ["Python", "SQL", "Excel", "Power BI"],
     color: "from-amber-300 via-orange-400 to-rose-500",
     impact: "Translated churn patterns into customer segments and practical retention priorities.",
-    repository: null,
+    repository: "https://github.com/atharva1845/bank-customer-churn-analysis",
     featured: true,
     insights: [
       "Balance, tenure, age, activity, and product usage emerged as useful churn signals.",
@@ -234,7 +234,7 @@ export const projects = [
     tools: ["SQL", "Power BI", "Python"],
     color: "from-violet-300 via-fuchsia-400 to-rose-500",
     impact: "Connected fragmented marketplace tables into a performance story spanning growth and fulfillment.",
-    repository: null,
+    repository: "https://github.com/atharva1845/olist-ecommerce-sql-analysis",
     featured: true,
     insights: [
       "Revenue and order trends exposed seasonal and category-level movement.",
