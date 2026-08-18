@@ -144,6 +144,16 @@ export default function Portfolio() {
           >
             <span>Current focus</span>
             <strong>Business analysis at the intersection of product, operations, and data.</strong>
+            <div className={styles.heroNoteMeta}>
+              <div>
+                <small>Based in</small>
+                <b>{siteMeta.location}</b>
+              </div>
+              <div>
+                <small>Profile</small>
+                <b>Business · Product · Data</b>
+              </div>
+            </div>
           </motion.div>
         </div>
 
