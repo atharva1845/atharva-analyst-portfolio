@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
 import {
@@ -46,6 +46,38 @@ const projectAccents = ["mint", "blue", "coral", "yellow", "violet", "sky"];
 
 export default function Portfolio() {
   const shouldReduceMotion = useReducedMotion();
+  const projectsGridRef = useRef<HTMLDivElement>(null);
+  const [hasMoreProjects, setHasMoreProjects] = useState(true);
+
+  useEffect(() => {
+    const grid = projectsGridRef.current;
+    if (!grid) return;
+
+    const updateProjectNavigation = () => {
+      setHasMoreProjects(grid.scrollLeft + grid.clientWidth < grid.scrollWidth - 4);
+    };
+
+    updateProjectNavigation();
+    grid.addEventListener("scroll", updateProjectNavigation, { passive: true });
+    window.addEventListener("resize", updateProjectNavigation);
+
+    return () => {
+      grid.removeEventListener("scroll", updateProjectNavigation);
+      window.removeEventListener("resize", updateProjectNavigation);
+    };
+  }, []);
+
+  const showNextProject = () => {
+    const grid = projectsGridRef.current;
+    const firstProject = grid?.firstElementChild as HTMLElement | null;
+    if (!grid || !firstProject) return;
+
+    const gap = Number.parseFloat(window.getComputedStyle(grid).columnGap) || 0;
+    grid.scrollBy({
+      left: firstProject.offsetWidth + gap,
+      behavior: shouldReduceMotion ? "auto" : "smooth",
+    });
+  };
 
   return (
     <div className={styles.site}>
@@ -183,33 +215,45 @@ export default function Portfolio() {
         title="Work that moves from analysis to action."
         intro="Six concise case studies across product, customer, marketplace, marketing, procurement, and operations analytics."
       >
-        <div className={styles.projectsGrid} role="region" aria-label="Project carousel" tabIndex={0}>
-          {projects.map((project, index) => (
-            <Reveal key={project.slug} delay={(index % 3) * 0.06}>
-              <motion.article className={`${styles.projectCard} ${styles[projectAccents[index]]}`} whileHover={shouldReduceMotion ? undefined : { y: -7 }}>
-                <div className={styles.projectTopline}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <small>{project.eyebrow}</small>
-                </div>
-                <h3>{project.title}</h3>
-                <p>{project.problem}</p>
-                <div className={styles.projectImpact}>
-                  <strong>Outcome</strong>
-                  <span>{project.impact}</span>
-                </div>
-                <div className={styles.projectTools}>
-                  {project.tools.slice(0, 4).map((tool) => <span key={tool}>{tool}</span>)}
-                </div>
-                <div className={styles.projectLinks}>
-                  {project.repository ? (
-                    <a href={project.repository} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
-                      <FaGithub size={15} /> Repository <ExternalLink size={14} />
-                    </a>
-                  ) : null}
-                </div>
-              </motion.article>
-            </Reveal>
-          ))}
+        <div className={styles.projectsCarousel}>
+          <div ref={projectsGridRef} className={styles.projectsGrid} role="region" aria-label="Project carousel" tabIndex={0}>
+            {projects.map((project, index) => (
+              <Reveal key={project.slug} delay={(index % 3) * 0.06}>
+                <motion.article className={`${styles.projectCard} ${styles[projectAccents[index]]}`} whileHover={shouldReduceMotion ? undefined : { y: -7 }}>
+                  <div className={styles.projectTopline}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <small>{project.eyebrow}</small>
+                  </div>
+                  <h3>{project.title}</h3>
+                  <p>{project.problem}</p>
+                  <div className={styles.projectImpact}>
+                    <strong>Outcome</strong>
+                    <span>{project.impact}</span>
+                  </div>
+                  <div className={styles.projectTools}>
+                    {project.tools.slice(0, 4).map((tool) => <span key={tool}>{tool}</span>)}
+                  </div>
+                  <div className={styles.projectLinks}>
+                    {project.repository ? (
+                      <a href={project.repository} target="_blank" rel="noreferrer" aria-label={`${project.title} repository`}>
+                        <FaGithub size={15} /> Repository <ExternalLink size={14} />
+                      </a>
+                    ) : null}
+                  </div>
+                </motion.article>
+              </Reveal>
+            ))}
+          </div>
+          <button
+            type="button"
+            className={`${styles.projectNext} ${hasMoreProjects ? "" : styles.projectNextHidden}`}
+            onClick={showNextProject}
+            aria-label="Show next project"
+            disabled={!hasMoreProjects}
+            tabIndex={hasMoreProjects ? 0 : -1}
+          >
+            <ArrowRight size={22} aria-hidden="true" />
+          </button>
         </div>
       </Section>
 

@@ -611,6 +611,14 @@
   gap: 16px;
 }
 
+.projectsCarousel {
+  position: relative;
+}
+
+.projectNext {
+  display: none;
+}
+
 .projectsGrid:focus-visible {
   outline: 3px solid #324bd5;
   outline-offset: 4px;
@@ -1326,6 +1334,31 @@
     height: 100%;
     scroll-snap-align: start;
     scroll-snap-stop: always;
+  }
+  .projectNext {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    right: -8px;
+    display: inline-flex;
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: #171722;
+    color: #ffffff;
+    box-shadow: 0 10px 28px rgba(23, 23, 34, 0.24);
+    transform: translateY(-50%);
+    transition: opacity 180ms ease, transform 180ms ease, background-color 180ms ease;
+  }
+  .projectNext:active { background: #324bd5; }
+  .projectNext:focus-visible { outline: 3px solid #324bd5; outline-offset: 3px; }
+  .projectNextHidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(10px, -50%);
   }
   .skillCard { min-height: auto; }
   .projectCard { min-height: 390px; height: 100%; }

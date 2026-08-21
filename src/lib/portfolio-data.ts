@@ -86,7 +86,7 @@ export const projects = [
   {
     order: 1,
     slug: "swiftvisa-ai-eligibility-platform",
-    title: "SwiftVisa",
+    title: "SwiftVisa - AI-Powered Visa Eligibility Checker",
     eyebrow: "Product analysis + applied AI + ML",
     problem: "Visa applicants face fragmented rules and unclear eligibility decisions across destinations.",
     role: "Product and ML Analyst",
