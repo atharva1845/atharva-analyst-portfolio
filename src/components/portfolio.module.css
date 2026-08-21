@@ -611,6 +611,11 @@
   gap: 16px;
 }
 
+.projectsGrid:focus-visible {
+  outline: 3px solid #324bd5;
+  outline-offset: 4px;
+}
+
 .projectCard {
   position: relative;
   display: flex;
@@ -1301,10 +1306,29 @@
   .sectionHeading { grid-template-columns: 1fr; gap: 16px; margin-bottom: 34px; }
   .sectionHeading h2 { font-size: 2.15rem; }
   .aboutLayout { grid-template-columns: 1fr; gap: 36px; }
-  .skillsGrid,
-  .projectsGrid { grid-template-columns: 1fr; }
+  .skillsGrid { grid-template-columns: 1fr; }
+  .projectsGrid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(82vw, 340px);
+    margin-inline: -16px;
+    padding: 2px 16px 18px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .projectsGrid::-webkit-scrollbar { display: none; }
+  .projectsGrid > div {
+    min-width: 0;
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
   .skillCard { min-height: auto; }
-  .projectCard { min-height: 390px; }
+  .projectCard { min-height: 390px; height: 100%; }
   .companyLine { grid-template-columns: 78px 1fr; }
   .companyLine time { grid-column: 2; }
   .educationCard { grid-template-columns: 1fr; }

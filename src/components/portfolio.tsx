@@ -183,7 +183,7 @@ export default function Portfolio() {
         title="Work that moves from analysis to action."
         intro="Six concise case studies across product, customer, marketplace, marketing, procurement, and operations analytics."
       >
-        <div className={styles.projectsGrid}>
+        <div className={styles.projectsGrid} role="region" aria-label="Project carousel" tabIndex={0}>
           {projects.map((project, index) => (
             <Reveal key={project.slug} delay={(index % 3) * 0.06}>
               <motion.article className={`${styles.projectCard} ${styles[projectAccents[index]]}`} whileHover={shouldReduceMotion ? undefined : { y: -7 }}>
@@ -265,23 +265,6 @@ export default function Portfolio() {
         </div>
 
         <div className={styles.researchShowcase}>
-          <Reveal>
-            <a className={styles.achievementFeature} href={achievement.image} target="_blank" rel="noreferrer">
-              <div className={styles.achievementImage}>
-                <Image src={achievement.image} alt="" width={1308} height={1179} sizes="(max-width: 780px) calc(100vw - 72px), 390px" />
-              </div>
-              <div className={styles.achievementCopy}>
-                <small>2025 recognition</small>
-                <h3>{achievement.title}</h3>
-                <p>{achievement.detail}</p>
-                <div className={styles.achievementSignals}>
-                  {achievement.signals.map((signal) => <span key={signal}>{signal}</span>)}
-                </div>
-                <span>View certificate <ArrowUpRight size={14} /></span>
-              </div>
-            </a>
-          </Reveal>
-
           <div className={styles.publicationGrid}>
             {research.map((paper, index) => (
               <Reveal key={paper.doi} delay={index * 0.06}>
@@ -304,6 +287,23 @@ export default function Portfolio() {
               </Reveal>
             ))}
           </div>
+
+          <Reveal>
+            <a className={styles.achievementFeature} href={achievement.image} target="_blank" rel="noreferrer">
+              <div className={styles.achievementImage}>
+                <Image src={achievement.image} alt="" width={1308} height={1179} sizes="(max-width: 780px) calc(100vw - 72px), 390px" />
+              </div>
+              <div className={styles.achievementCopy}>
+                <small>2025 recognition</small>
+                <h3>{achievement.title}</h3>
+                <p>{achievement.detail}</p>
+                <div className={styles.achievementSignals}>
+                  {achievement.signals.map((signal) => <span key={signal}>{signal}</span>)}
+                </div>
+                <span>View certificate <ArrowUpRight size={14} /></span>
+              </div>
+            </a>
+          </Reveal>
         </div>
       </Section>
 
